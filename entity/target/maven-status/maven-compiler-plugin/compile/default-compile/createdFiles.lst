@@ -1,0 +1,14 @@
+com\exue\entity\LearningPathStage.class
+com\exue\entity\Order.class
+com\exue\entity\Section.class
+com\exue\entity\Teacher.class
+com\exue\entity\LearningPathCourse.class
+com\exue\entity\Comment.class
+com\exue\entity\Sale.class
+com\exue\entity\Collect.class
+com\exue\entity\User.class
+com\exue\entity\Course.class
+com\exue\entity\LearningPath.class
+com\exue\entity\Activity.class
+com\exue\entity\Video.class
+com\exue\entity\CourseType.class
