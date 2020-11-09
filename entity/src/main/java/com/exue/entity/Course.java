@@ -3,6 +3,7 @@ package com.exue.entity;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 课程
@@ -52,7 +53,10 @@ public class Course {
      */
     private Boolean status;
 
-
+    /**
+     * 评论
+     */
+    private List<Comment> comments;
 
     /**
      * 逻辑删除
