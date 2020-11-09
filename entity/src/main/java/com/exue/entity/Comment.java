@@ -1,6 +1,6 @@
 package com.exue.entity;
 
-import com.sun.deploy.util.UpdateCheck;
+
 import lombok.Data;
 
 import java.util.Date;
