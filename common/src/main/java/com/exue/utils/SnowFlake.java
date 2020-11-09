@@ -1,5 +1,7 @@
 package com.exue.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.NetworkInterface;
@@ -10,6 +12,7 @@ import java.util.Enumeration;
  * 雪花算法
  * @author 86130
  */
+@Component
 public class SnowFlake {
     /** 开始时间截 (2015-01-01) */
     private final long twepoch = 1420041600000L;
@@ -83,7 +86,7 @@ public class SnowFlake {
      * 获得下一个ID (该方法是线程安全的)
      * @return SnowflakeId
      */
-    public synchronized long nextId() {
+    public synchronized Long nextId() {
         long timestamp = timeGen();
 
         //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
@@ -114,6 +117,11 @@ public class SnowFlake {
                 | (datacenterId << datacenterIdShift)
                 | (workerId << workerIdShift)
                 | sequence;
+    }
+
+    @Override
+    public String toString() {
+        return nextId().toString();
     }
 
     /**

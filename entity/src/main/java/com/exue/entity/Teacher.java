@@ -2,6 +2,7 @@ package com.exue.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,11 @@ import java.util.Date;
  * @author 86130
  */
 @Data
-public class Teacher {
+public class Teacher  implements Serializable {
+
+
+    private static final long serialVersionUID = 1L;
+
     private String id;
     /**
      * 讲师花名

@@ -3,6 +3,7 @@ package com.exue.controller;
 import com.exue.entity.Teacher;
 import com.exue.service.TeacherService;
 import com.exue.utils.Result;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,20 +14,27 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/teacher/info")
+@CrossOrigin
 public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
 
-    @GetMapping("getAll")
-    public Result getAll() {
-        List<Teacher> teachers = teacherService.getTeachers();
+    @GetMapping("getAll/{pageNum}/{pageSize}")
+    public Result getAll(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        List<Teacher> teachers = teacherService.getTeachers(pageNum, pageSize);
         return Result.ok().data("teachers", teachers);
     }
 
     @PostMapping("add")
-    public Result add() {
-        teacherService.addTeacher(null);
+    public Result add(@RequestBody Teacher teacher) {
+        teacherService.addTeacher(teacher);
+        return Result.ok();
+    }
+
+    @PostMapping("update")
+    public Result update(@RequestBody Teacher teacher) {
+        teacherService.updateTeacherById(teacher);
         return Result.ok();
     }
 

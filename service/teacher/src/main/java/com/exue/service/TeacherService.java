@@ -30,8 +30,10 @@ public interface TeacherService {
 
     /**
      * 获取讲师列表
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    List<Teacher> getTeachers();
+    List<Teacher> getTeachers(Integer pageNum, Integer pageSize);
 
 }

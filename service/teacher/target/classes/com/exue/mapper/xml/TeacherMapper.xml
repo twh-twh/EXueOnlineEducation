@@ -34,7 +34,7 @@
         where id = #{id}
     </update>
     <select id="getTeachers" resultType="com.exue.entity.Teacher">
-        select id, name, intro, avatar
+        select id, name, intro, avatar, `delete`
         from teacher
         where `delete` = 0
     </select>

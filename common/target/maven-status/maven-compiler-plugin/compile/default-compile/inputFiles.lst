@@ -4,5 +4,6 @@ D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\utils\R
 D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\exception\EXueException.java
 D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\utils\MD5.java
 D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\utils\SnowFlake.java
+D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\aop\UpdateAndAddToTimeAdvice.java
 D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\exception\GlobalExceptionHandler.java
 D:\EXueOnlineEducation\EXueOnlineEducation\common\src\main\java\com\exue\utils\ResultCode.java

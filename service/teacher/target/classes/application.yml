@@ -37,3 +37,9 @@ mybatis:
   type-aliases-package: com.exue.entity
   mapper-locations: classpath:com/exue/mapper/xml/*.xml
 
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
