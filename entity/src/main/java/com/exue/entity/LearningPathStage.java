@@ -30,7 +30,7 @@ public class LearningPathStage {
     /**
      * 逻辑删除
      */
-    private Boolean delete;
+    private Boolean isDeleted;
 
     /**
      * 创建时间

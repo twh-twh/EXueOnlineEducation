@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exue.mapper.ActivityMapper">
+
+    <resultMap id="activityMap" type="Activity">
+        <id column="a.id" property="id"/>
+        <result column="title" property="title" />
+        <result column="intro" property="intro" />
+        <result column="a.price" property="price" />
+        <association property="course" javaType="Course">
+            <id column="c.id" property="id" />
+            <result column="c.price" property="price" />
+        </association>
+    </resultMap>
+    <update id="updateActivityById">
+        update activity
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="deleteActivityById">
+        update activity
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+    <insert id="insertActivity">
+        insert into activity(id, course_id, title, intro, price, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{course.id}, #{title}, #{intro}, #{price}, 0, #{creationTime}, #{updateTime})
+    </insert>
+
+    <select id="selectAll" resultMap="activityMap">
+        select a.id as 'a.id', a.title, a.intro, a.price as 'a.price',
+                c.id as 'c.id', c.price as 'c.price'
+        from activity a join course c on a.course_id = c.id
+        where a.is_deleted = 0 and c.is_deleted = 0
+    </select>
+
+
+
+
+
+</mapper>

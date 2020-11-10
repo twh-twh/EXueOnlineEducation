@@ -16,8 +16,6 @@ spring:
     port: 6379
     database: 0
     timeout: 1800000
-  session:
-    store-type: redis
 server:
   servlet:
-    context-path: backstage
+    context-path: /backstage

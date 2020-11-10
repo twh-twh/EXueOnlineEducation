@@ -14,6 +14,7 @@
     <meta content="IT培训,IT教育,编程,在线编程,Linux,Linux教程,Linux操作系统,Python,Python教程,Python基础教程,Java,Java编程,C语言,大数据,Node.js,Hadoop,PHP,Docker" name="keywords">
     
     <meta content="" name="author">
+    <base th:href="@{/}">
 
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="stylesheet" href="static/font-awesome//4.7.0/css/font-awesome.min.css">
@@ -24,10 +25,6 @@
 	<link rel="stylesheet" href="app/css/dest/styles.css?=2016121272249">
 
 	<style>
-		@font-face {
-			font-family: "lantingxihei";
-			src: url("fonts/FZLTCXHJW.TTF");
-		}
 
         /* modal 模态框*/
         #invite-user .modal-body {
@@ -59,27 +56,22 @@
 			right: 74px;
 			z-index: 999;
 		}
-		/* end modal */
 
         .en-footer {
             padding: 30px;
             text-align: center;
             font-size: 14px;
         }
+
+        .navbar-banner {
+            margin-top: 50px;
+            background-image: url("img/homepage-bg.png");
+            background-size: cover;
+            backgtound-repeat: no-repeat;
+        }
+
     </style>
-	
-<style style="text/css">
-.navbar-banner {
-    margin-top: 50px;
-    background: url("img/homepage-bg.png");
-    background-size: cover;
-    backgtound-repeat: no-repeat;
-}
-</style>
 
-
-	
-    
 </head>
 
 <body>
@@ -179,15 +171,15 @@
                             <div class="help-block text-left"></div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name="email" id="email" type="email" placeholder="邮箱">
+                            <input class="form-control" name="email" id="email" type="email" placeholder="手机号">
                             <div class="help-block text-left"></div>
                         </div>
                         <div class="form-group">
                             <input class="form-control" name="password" id="password" type="password" placeholder="密码">
                             <div class="help-block text-left"></div>
                         </div>
-                        <button class="btn register" type="submit">加入实验楼</button>
-                        <p class="tip">点击"加入实验楼"，表示您已经同意我们的<a href="privacy/index.html" target="_blank"> 隐私条款</a></P>
+                        <button class="btn register" type="submit">注册账户</button>
+                        <p class="tip">点击"注册账户"，表示您已经同意我们的<a href="privacy/index.html" target="_blank"> 隐私条款</a></P>
                     </form>
                     
                 </div>
