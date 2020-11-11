@@ -16,6 +16,8 @@ spring:
     port: 6379
     database: 0
     timeout: 1800000
+  main:
+    allow-bean-definition-overriding: true
 server:
   servlet:
     context-path: /backstage

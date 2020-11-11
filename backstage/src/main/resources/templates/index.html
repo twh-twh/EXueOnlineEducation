@@ -212,6 +212,49 @@
     </div>
 </div>
 
+<!--          课程推荐开始       -->
+<div class="line-and-laboratory">
+    <div class="container">
+        <div class="clearfix text-center item-header">
+            <span class="line"></span>
+            <div class="text-center item-title">热门课程</div>
+            <span class="line"></span>
+        </div>
+        <div class="clearfix courses">
+
+
+
+
+            <div class="col-md-3 col-sm-6  course" th:each="course : ${courses}">
+                <a class="course-box" href="courses/show.html">
+                    <div class="course-img">
+                        <img th:alt="${course.title}" th:src="${course.cover}">
+                    </div>
+                    <div class="course-body">
+                        <span class="course-title" data-toggle="tooltip" data-placement="bottom" th:title="${course.title}" th:text="${course.title}"></span>
+                    </div>
+                    <div class="course-footer">
+			<span class="course-per-num pull-left">
+                <i class="fa fa-users"></i>
+                <span th:text="${course.viewCount}"></span>
+			</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="clearfix item-footer">
+            <div class="pull-right watch-all">
+                <a href="courses/index.html">查看更多 ></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--          课程推荐结束       -->
+
+
+
+<!--          课程路线开始      -->
 <div class="line-and-laboratory">
 	<div class="container">
         <div class="clearfix text-center item-header">
@@ -491,181 +534,7 @@
 	</div>
 </div>
 
-<div class="line-and-laboratory">
-	<div class="container">
-        <div class="clearfix text-center item-header">
-            <span class="line"></span>
-            <div class="text-center item-title">实验课程</div>
-            <span class="line"></span>
-        </div>
-		<div class="clearfix courses">
-        
-            
-
-
-<div class="col-md-3 col-sm-6  course">
-    <a class="course-box" href="courses/show.html">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/1/follow"
-                data-unfollow-url="/courses/1/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="Linux 基础入门（新版）" src="img/ncn1.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Linux 基础入门（新版）">Linux 基础入门（新版）</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                85157
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-        
-            
-
-
-<div class="col-md-3 col-sm-6  course">
-    <a class="course-box" href="courses/show.html">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/11/follow"
-                data-unfollow-url="/courses/11/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="Go语言编程" src="img/ncn11.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Go语言编程">Go语言编程</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                5741
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-        
-            
-
-
-<div class="col-md-3 col-sm-6  course">
-    <a class="course-box" href="courses/show.html">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/23/follow"
-                data-unfollow-url="/courses/23/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="PHP编程语言" src="img/ncn23.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="PHP编程语言">PHP编程语言</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                8093
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-        
-            
-
-
-<div class="col-md-3 col-sm-6  course">
-    <a class="course-box" href="courses/show.html">
-        <div class="sign-box">
-            
-            
-            
-            <i class="fa fa-star-o course-follow pull-right"
-                data-follow-url="/courses/30/follow"
-                data-unfollow-url="/courses/30/unfollow"  style="display:none"  ></i>
-            
-        </div>
-        <div class="course-img">
-            
-            <img alt="Python Django Web框架" src="img/ncn30.jpg">
-            
-        </div>
-        
-        <div class="course-body">
-            <span class="course-title" data-toggle="tooltip" data-placement="bottom" title="Python Django Web框架">Python Django Web框架</span>
-        </div>
-        <div class="course-footer">
-			<span class="course-per-num pull-left">
-                <i class="fa fa-users"></i>
-                
-                5691
-                
-			</span>
-            
-                
-            
-        </div>
-    </a>
-</div>
-
-        
-		</div>
-        <div class="clearfix item-footer">
-            <div class="pull-right watch-all">
-                <a href="courses/index.html">查看更多 ></a>
-            </div>
-        </div>
-	</div>
-</div>
-
-
-
-	
-	
-
+<!--          课程路线结束      -->
 	<div class="modal fade" id="invite-user" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">

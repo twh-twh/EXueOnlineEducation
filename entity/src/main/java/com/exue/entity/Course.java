@@ -41,7 +41,7 @@ public class Course {
     /**
      *  预计总课时
      */
-    private Integer lesson_num;
+    private Integer lessonNum;
 
     /**
      * 封面路径
@@ -52,6 +52,11 @@ public class Course {
      * 上架状态
      */
     private Boolean status;
+
+    /**
+     * 观看量
+     */
+    private Integer viewCount;
 
     /**
      * 评论

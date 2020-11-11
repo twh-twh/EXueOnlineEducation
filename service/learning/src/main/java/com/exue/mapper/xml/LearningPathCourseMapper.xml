@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exue.mapper.LearningPathCourseMapper">
+
+
+    <insert id="insertLearningPathCourse">
+        insert into learning_path_course(id, stage_id, course_id, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{stageId}, #{course.id}, 0, #{creationTime}, #{updateTime})
+    </insert>
+
+    <update id="updateLearningPathCourse">
+        update learning_path_course
+        <set>
+            <if test="stageId != null">
+                stage_id = #{stageId},
+            </if>
+            <if test="course.id != null">
+                course_id = #{course.id}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="deleteLearningPathCourse">
+        update learning_path_course
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+    <select id="selectAllByLearningPathStageIds" resultMap="selectLearningPathCourse">
+        select id, stage_id, course_id as "c.id", title, view_count, cover
+        from learning_path_course lpc join course c on lpc.course_id = c.id
+        where lpc.is_deleted = 0 and c.is_deleted = 0
+        <foreach collection="ids" item="id" open=" and stage_id in (" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <resultMap id="selectLearningPathCourse" type="LearningPathCourse">
+        <id column="id" property="id" />
+        <result column="stage_id" property="stageId" />
+        <association property="course" javaType="Course">
+            <id column="c.id" property="id" />
+            <result column="title" property="title" />
+            <result column="view_count" property="viewCount" />
+            <result column="cover" property="cover" />
+        </association>
+    </resultMap>
+</mapper>

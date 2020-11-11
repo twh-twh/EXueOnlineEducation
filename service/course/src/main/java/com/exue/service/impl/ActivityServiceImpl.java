@@ -5,7 +5,6 @@ import com.exue.mapper.ActivityMapper;
 import com.exue.service.ActivityService;
 import com.exue.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

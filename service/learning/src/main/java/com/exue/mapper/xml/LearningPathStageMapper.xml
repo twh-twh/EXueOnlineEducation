@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exue.mapper.LearningPathStageMapper">
+
+
+
+    <insert id="insertLearningPathStage">
+        insert into learning_path_stage(id, title, learning_path_id, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{title}, #{learningPath.id}, 0, #{creationTime}, #{updateTime})
+    </insert>
+
+    <update id="updateLearningPathStage">
+        update learning_path_stage
+        <set>
+            <if test="title != null">
+                title = #{title}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="deleteLearningPathStage">
+        update learning_path_stage
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+    <select id="selectLearningPathStageByLearningPathId" resultType="com.exue.entity.LearningPathStage">
+        select id, title, learning_path_id as 'learningPathId'
+        from learning_path_stage
+        where learning_path_id = #{id} and is_deleted = 0
+    </select>
+</mapper>

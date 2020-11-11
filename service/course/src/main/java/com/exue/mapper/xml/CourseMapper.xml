@@ -6,8 +6,118 @@
 <mapper namespace="com.exue.mapper.CourseMapper">
 
     <resultMap id="courseMap" type="Course">
-        <id column="c.id" property="id" />
 
     </resultMap>
+
+    <resultMap id="selectCourseMap" type="Course">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="intro" property="intro" />
+        <result column="price" property="price" />
+        <result column="cover" property="cover" />
+        <result column="view_count" property="viewCount" />
+        <result column="status" property="status" />
+        <result column="creation_time" property="creationTime" />
+        <association property="teacher" javaType="Teacher">
+            <id column="teacher_id" property="id" />
+        </association>
+    </resultMap>
+
+    <insert id="insertCourse">
+        insert into course(id, teacher_id, course_type, title, intro, price, lesson_num, cover, view_count, status, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{teacher.id}, #{courseType.id}, #{title}, #{intro}, #{price}, #{lessonNum}, #{cover}, 0, 0, 0, #{creationTime}, #{updateTime})
+    </insert>
+
+    <update id="updateCourseById">
+        update course
+        <set>
+            <if test="teacher.id != null">
+                teacher_id = #{teacher.id},
+            </if>
+            <if test="courseType.id != null">
+                course_type = #{courseType.id},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="lessonNum != null">
+                lesson_num = #{lessonNum},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateStatusById">
+        update course
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <update id="deleteCourse">
+        update course
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+    <select id="selectCourses" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where status = 1 and is_deleted = 0
+    </select>
+
+
+    <select id="selectAllCourses" resultMap="selectCourseMap">
+        select id, teacher_id, course_type, title, intro, price, lesson_num, cover, view_count, status, creation_time
+        from course
+        where status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseSortByViewCount" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where status = 1 and is_deleted = 0
+        order by view_count
+        <if test="!sort">
+            desc
+        </if>
+    </select>
+
+    <select id="selectCourseSortByPrice" resultType="com.exue.entity.Course">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where status = 1 and is_deleted = 0
+        order by price
+        <if test="!sort">
+            desc
+        </if>
+    </select>
+
+    <select id="selectCourseByTeacher" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where teacher_id = #{id} and status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseByCourseType" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where course_type = #{id} and status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseByLikeTitle" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where title like #{title} and status = 1 and is_deleted = 0
+    </select>
+
 
 </mapper>
