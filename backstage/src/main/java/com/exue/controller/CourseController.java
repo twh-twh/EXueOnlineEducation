@@ -1,0 +1,42 @@
+package com.exue.controller;
+
+import com.exue.client.CourseClient;
+import com.exue.utils.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.LinkedHashMap;
+
+
+/**
+ * @author 86130
+ */
+@Controller
+@RequestMapping("/course")
+public class CourseController {
+
+    @Autowired
+    private CourseClient courseClient;
+
+    @GetMapping("explore")
+    public String explore(@RequestParam(value = "page", required = false,defaultValue = "1") Integer page, Model model) {
+
+        Result result = courseClient.getAll(page, 12);
+
+        Object courses = result.getData().get("courses");
+        LinkedHashMap<String, Object> pageInfo = (LinkedHashMap)courses;
+
+        model.addAttribute("courses", pageInfo.get("list"));
+        model.addAttribute("pageNum", pageInfo.get("pageNum"));
+        model.addAttribute("pages", pageInfo.get("pages"));
+        model.addAttribute("isFirstPage", pageInfo.get("isFirstPage"));
+        model.addAttribute("isLastPage", pageInfo.get("isLastPage"));
+
+
+        return "course_index";
+    }
+}

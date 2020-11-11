@@ -7,8 +7,8 @@
 
 
     <insert id="insertLearningPath">
-        insert into learning_path(id, title, intro, duration, is_deleted, creation_time, update_time)
-        VALUES (#{id}, #{tetle}, #{intro}, #{duration}, 0, #{creationTime}, #{updateTime})
+        insert into learning_path(id, title, intro, duration, cover, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{title}, #{intro}, #{duration}, #{cover}, 0, #{creationTime}, #{updateTime})
     </insert>
 
     <update id="updateLearningPath">
@@ -34,7 +34,7 @@
     </update>
 
     <select id="selectAllLearningPath" resultType="com.exue.entity.LearningPath">
-        select id, title, intro, duration
+        select id, title, intro, duration, cover
         from learning_path
         where is_deleted = 0
     </select>

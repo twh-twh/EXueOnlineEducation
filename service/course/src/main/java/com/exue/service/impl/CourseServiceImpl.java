@@ -1,5 +1,6 @@
 package com.exue.service.impl;
 
+import com.exue.annotation.PageAnnotation;
 import com.exue.entity.Course;
 import com.exue.mapper.CourseMapper;
 import com.exue.service.CourseService;
@@ -48,5 +49,15 @@ public class CourseServiceImpl implements CourseService {
         PageHelper.startPage(1, size);
         List<Course> courses = courseMapper.selectCourseSortByViewCount(false);
         return courses;
+    }
+
+    @Override
+    @PageAnnotation
+    public List<Course> getAllCourse(Integer pageNum, Integer pageSize, Boolean isNewest) {
+        if (isNewest) {
+            return courseMapper.selectCourseSortByTime(false);
+        }
+
+        return courseMapper.selectCourseSortByViewCount(false);
     }
 }

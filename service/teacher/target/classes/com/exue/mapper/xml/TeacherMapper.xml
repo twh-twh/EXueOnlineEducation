@@ -7,7 +7,7 @@
 
 
     <insert id="addTeacher">
-        insert into teacher(id, name, intro, avatar, `delete`, creation_time, update_time)
+        insert into teacher(id, name, intro, avatar, is_deleted, creation_time, update_time)
         VALUES (#{id}, #{name}, #{intro}, #{avatar}, 0, #{creationTime}, #{updateTime})
     </insert>
     <update id="updateTeacherById">
@@ -30,12 +30,12 @@
     </update>
     <update id="deleteTeacherById">
         update teacher
-        set `delete` = 1
+        set is_deleted = 1
         where id = #{id}
     </update>
     <select id="getTeachers" resultType="com.exue.entity.Teacher">
-        select id, name, intro, avatar, `delete`
+        select id, name, intro, avatar
         from teacher
-        where `delete` = 0
+        where is_deleted = 0
     </select>
 </mapper>

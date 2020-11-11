@@ -5,10 +5,6 @@
 
 <mapper namespace="com.exue.mapper.CourseMapper">
 
-    <resultMap id="courseMap" type="Course">
-
-    </resultMap>
-
     <resultMap id="selectCourseMap" type="Course">
         <id column="id" property="id" />
         <result column="title" property="title" />
@@ -81,21 +77,21 @@
         where status = 1 and is_deleted = 0
     </select>
 
-    <select id="selectCourseSortByViewCount" resultMap="selectCourseMap">
-        select id, teacher_id, title, intro, price, cover, view_count
+    <select id="selectCourseSortByViewCount" resultType="com.exue.entity.Course">
+        select id,  title,  price, cover, view_count as 'viewCount'
         from course
         where status = 1 and is_deleted = 0
-        order by view_count
+        order by viewCount
         <if test="!sort">
             desc
         </if>
     </select>
 
-    <select id="selectCourseSortByPrice" resultType="com.exue.entity.Course">
-        select id, teacher_id, title, intro, price, cover, view_count
+    <select id="selectCourseSortByTime" resultType="com.exue.entity.Course">
+        select id,  title,  price, cover, view_count as 'viewCount'
         from course
         where status = 1 and is_deleted = 0
-        order by price
+        order by creation_time
         <if test="!sort">
             desc
         </if>

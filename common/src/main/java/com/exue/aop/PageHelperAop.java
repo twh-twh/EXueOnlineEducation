@@ -34,5 +34,7 @@ public class PageHelperAop {
                 pageSize = Math.max(pageSize, Integer.parseInt(args[i].toString()));
             }
         }
+
+        PageHelper.startPage(pageNum, pageSize);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @author 86130
@@ -21,4 +22,6 @@ public interface CourseClient {
     @GetMapping("/course/info/getHot/{size}")
     Result getHot(@PathVariable Integer size);
 
+    @PostMapping("/course/info/getAll/{pageNum}/{pageSize}")
+    Result getAll(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize);
 }

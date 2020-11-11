@@ -41,4 +41,13 @@ public interface CourseService {
      * @return
      */
     List<Course> getHotCourse(int size);
+
+    /**
+     * 获取课程分页
+     * @param pageNum
+     * @param pageSize
+     * @param isNewest 是以最新时间排序吗
+     * @return
+     */
+    List<Course> getAllCourse(Integer pageNum, Integer pageSize, Boolean isNewest);
 }

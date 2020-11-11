@@ -28,6 +28,10 @@ public class LearningPath {
      */
     private Integer duration;
 
+    /**
+     * 封面
+     */
+    private String cover;
 
     /**
      * 阶段

@@ -1,19 +1,20 @@
-package com.exue.mapper;
+package com.exue.service;
 
 import com.exue.entity.LearningPath;
 
 import java.util.List;
 
 /**
+ * 学习路径服务
  * @author 86130
  */
-public interface LearningPathMapper {
+public interface LearningPathService {
 
     /**
-     * 插入学习路径
+     * 添加学习路径
      * @param learningPath
      */
-    void insertLearningPath(LearningPath learningPath);
+    void addLearningPath(LearningPath learningPath);
 
     /**
      * 修改学习路径
@@ -21,18 +22,16 @@ public interface LearningPathMapper {
      */
     void updateLearningPath(LearningPath learningPath);
 
-
     /**
      * 删除学习路径
      * @param id
      */
-    void deleteLearningPath(String id);
+    void deleteLearningPathById(String id);
 
     /**
-     * 查询全部学习路径
-     * @return
+     * 获取热门的学习路径
+     * @param size
      */
-    List<LearningPath> selectAllLearningPath();
-
+    List<LearningPath> getHotLearningPaths(Integer size);
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface CourseMapper {
 
     /**
-     * 查询全部的课程包含未上回
+     * 查询全部的课程包含未上架
      * @return
      */
     List<Course> selectAllCourses();
@@ -35,7 +35,7 @@ public interface CourseMapper {
      * @param sort
      * @return
      */
-    List<Course> selectCourseSortByPrice(Boolean sort);
+    List<Course> selectCourseSortByTime(Boolean sort);
 
     /**
      * 根据老师id查询课程
