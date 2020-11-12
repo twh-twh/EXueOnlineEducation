@@ -1,6 +1,7 @@
 package com.exue.service;
 
 import com.exue.entity.Course;
+import com.exue.entity.frontvo.CourseFrontVo;
 
 import java.util.List;
 
@@ -46,8 +47,10 @@ public interface CourseService {
      * 获取课程分页
      * @param pageNum
      * @param pageSize
-     * @param isNewest 是以最新时间排序吗
+     * @param courseFrontVo
      * @return
      */
-    List<Course> getAllCourse(Integer pageNum, Integer pageSize, Boolean isNewest);
+    List<Course> getAllCourse(Integer pageNum, Integer pageSize, CourseFrontVo courseFrontVo);
+
+
 }

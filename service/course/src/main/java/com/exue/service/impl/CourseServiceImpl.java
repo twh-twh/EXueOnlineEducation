@@ -2,6 +2,7 @@ package com.exue.service.impl;
 
 import com.exue.annotation.PageAnnotation;
 import com.exue.entity.Course;
+import com.exue.entity.frontvo.CourseFrontVo;
 import com.exue.mapper.CourseMapper;
 import com.exue.service.CourseService;
 import com.exue.utils.SnowFlake;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 86130
@@ -47,17 +49,28 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getHotCourse(int size) {
         PageHelper.startPage(1, size);
-        List<Course> courses = courseMapper.selectCourseSortByViewCount(false);
+        List<Course> courses = courseMapper.selectCourseSort(null, null, true);
         return courses;
     }
 
     @Override
     @PageAnnotation
-    public List<Course> getAllCourse(Integer pageNum, Integer pageSize, Boolean isNewest) {
-        if (isNewest) {
-            return courseMapper.selectCourseSortByTime(false);
-        }
+    public List<Course> getAllCourse(Integer pageNum, Integer pageSize,  CourseFrontVo courseFrontVo) {
 
-        return courseMapper.selectCourseSortByViewCount(false);
+        if (Objects.isNull(courseFrontVo.getClasses())) {
+            return courseMapper.selectCourseSort(null, courseFrontVo.getCourseTypeId(), courseFrontVo.getIsTime());
+        } else {
+            switch (courseFrontVo.getClasses()) {
+                case CourseFrontVo.CLASSES_SALE:
+                    return courseMapper.selectCourseSortBySale(courseFrontVo.getCourseTypeId(),  courseFrontVo.getIsTime());
+                case CourseFrontVo.CLASSES_FREE:
+                    return courseMapper.selectCourseSort(0, courseFrontVo.getCourseTypeId(), courseFrontVo.getIsTime());
+                case CourseFrontVo.CLASSES_ACTIVITY:
+                    return courseMapper.selectCourseSortByActivity(courseFrontVo.getCourseTypeId(),  courseFrontVo.getIsTime());
+                default:
+                    return null;
+            }
+        }
     }
+
 }

@@ -1,13 +1,13 @@
 package com.exue.controller;
 
 import com.exue.entity.Course;
+import com.exue.entity.frontvo.CourseFrontVo;
 import com.exue.service.CourseService;
 import com.exue.utils.Result;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,10 +40,10 @@ public class CourseController {
         return Result.ok().data("courses", courses);
     }
 
-    @PostMapping("getAll/{pageNum}/{pageSize}")
-    public Result getAll(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize) {
+    @PostMapping("getAll")
+    public Result getAll(@RequestBody CourseFrontVo courseFrontVo) {
+        List<Course> courses = courseService.getAllCourse(courseFrontVo.getPageNum(), courseFrontVo.getPageSize(), courseFrontVo);
 
-        List<Course> courses = courseService.getAllCourse(pageNum, pageSize, true);
         PageInfo<Course> pageInfo = new PageInfo<>(courses);
         return Result.ok().data("courses", pageInfo);
     }

@@ -1,6 +1,7 @@
 package com.exue.mapper;
 
 import com.exue.entity.Course;
+import com.exue.entity.CourseType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,18 +25,14 @@ public interface CourseMapper {
     List<Course> selectCourses();
 
     /**
-     * 根据观看数排序
-     * @param sort true 是升序  false 是降序
+     * 多条件查询带排序
+     * @param isTime 是不是时间
+     * @param courseTypeId 课程类型id
+     * @param price 价格
      * @return
      */
-    List<Course> selectCourseSortByViewCount(Boolean sort);
+    List<Course> selectCourseSort(@Param("price") Integer price, @Param("courseTypeId") String courseTypeId, @Param("isTime") Boolean isTime);
 
-    /**
-     * 根据价格排序
-     * @param sort
-     * @return
-     */
-    List<Course> selectCourseSortByTime(Boolean sort);
 
     /**
      * 根据老师id查询课程
@@ -82,5 +79,22 @@ public interface CourseMapper {
      * @param id
      */
     void deleteCourse(String id);
+
+    /**
+     * 多条件查询带排序
+     * @param isTime 是不是时间
+     * @param courseTypeId 课程类型id
+     * @return
+     */
+    List<Course> selectCourseSortByActivity(@Param("courseTypeId") String courseTypeId, @Param("isTime") Boolean isTime);
+
+
+    /**
+     * 多条件查询带排序
+     * @param isTime 是不是时间
+     * @param courseTypeId 课程类型id
+     * @return
+     */
+    List<Course> selectCourseSortBySale( @Param("courseTypeId") String courseTypeId,  @Param("isTime") Boolean isTime);
 
 }

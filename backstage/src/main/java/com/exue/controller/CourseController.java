@@ -1,6 +1,7 @@
 package com.exue.controller;
 
 import com.exue.client.CourseClient;
+import com.exue.entity.frontvo.CourseFrontVo;
 import com.exue.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,9 +24,11 @@ public class CourseController {
     private CourseClient courseClient;
 
     @GetMapping("explore")
-    public String explore(@RequestParam(value = "page", required = false,defaultValue = "1") Integer page, Model model) {
+    public String explore(CourseFrontVo courseFrontVo, Model model) {
 
-        Result result = courseClient.getAll(page, 12);
+        Result result = courseClient.getAll(courseFrontVo);
+
+        Result courseTypeResult = courseClient.getAllType();
 
         Object courses = result.getData().get("courses");
         LinkedHashMap<String, Object> pageInfo = (LinkedHashMap)courses;
@@ -35,8 +38,13 @@ public class CourseController {
         model.addAttribute("pages", pageInfo.get("pages"));
         model.addAttribute("isFirstPage", pageInfo.get("isFirstPage"));
         model.addAttribute("isLastPage", pageInfo.get("isLastPage"));
+        model.addAttribute("courseTypes", courseTypeResult.getData().get("courseTypes"));
+        model.addAttribute("classes", courseFrontVo.getClasses());
+        model.addAttribute("courseTypeId", courseFrontVo.getCourseTypeId());
+        model.addAttribute("isTime", courseFrontVo.getIsTime());
 
 
         return "course_index";
     }
+
 }

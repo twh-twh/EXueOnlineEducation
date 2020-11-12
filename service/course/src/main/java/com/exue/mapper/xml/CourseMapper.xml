@@ -77,25 +77,27 @@
         where status = 1 and is_deleted = 0
     </select>
 
-    <select id="selectCourseSortByViewCount" resultType="com.exue.entity.Course">
+    <select id="selectCourseSort" resultType="com.exue.entity.Course">
         select id,  title,  price, cover, view_count as 'viewCount'
         from course
-        where status = 1 and is_deleted = 0
-        order by viewCount
-        <if test="!sort">
-            desc
+        where
+        <if test="courseTypeId != null">
+            course_type = #{courseTypeId} and
+        </if>
+        <if test="price != null">
+            price = #{price} and
+        </if>
+        status = 1 and is_deleted = 0
+        order by
+        <if test="isTime">
+            creation_time desc
+        </if>
+        <if test="!isTime">
+            view_count desc
         </if>
     </select>
 
-    <select id="selectCourseSortByTime" resultType="com.exue.entity.Course">
-        select id,  title,  price, cover, view_count as 'viewCount'
-        from course
-        where status = 1 and is_deleted = 0
-        order by creation_time
-        <if test="!sort">
-            desc
-        </if>
-    </select>
+
 
     <select id="selectCourseByTeacher" resultMap="selectCourseMap">
         select id, teacher_id, title, intro, price, cover, view_count
@@ -113,6 +115,40 @@
         select id, teacher_id, title, intro, price, cover, view_count
         from course
         where title like #{title} and status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseSortByActivity" resultType="com.exue.entity.Course">
+        select c.id,  c.title,  c.price, c.cover, c.view_count as 'viewCount'
+        from course c join activity a on c.id = a.course_id
+        where
+        <if test="courseTypeId != null">
+            course_type = #{courseTypeId} and
+        </if>
+        status = 1 and c.is_deleted = 0 and a.is_deleted = 0
+        order by
+        <if test="isTime">
+            c.creation_time desc
+        </if>
+        <if test="!isTime">
+            view_count desc
+        </if>
+    </select>
+
+    <select id="selectCourseSortBySale" resultType="com.exue.entity.Course">
+        select c.id,  c.title,  c.price, c.cover, c.view_count as 'viewCount'
+        from course c join sale s on c.id = s.course_id
+        where
+        <if test="courseTypeId != null">
+            course_type = #{courseTypeId} and
+        </if>
+        status = 1 and c.is_deleted = 0 and s.is_deleted = 0
+        order by
+        <if test="isTime">
+            c.creation_time desc
+        </if>
+        <if test="!isTime">
+            view_count desc
+        </if>
     </select>
 
 
