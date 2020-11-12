@@ -38,6 +38,8 @@ public class CourseController {
         model.addAttribute("pages", pageInfo.get("pages"));
         model.addAttribute("isFirstPage", pageInfo.get("isFirstPage"));
         model.addAttribute("isLastPage", pageInfo.get("isLastPage"));
+        model.addAttribute("pageNums", pageInfo.get("navigatepageNums"));
+
         model.addAttribute("courseTypes", courseTypeResult.getData().get("courseTypes"));
         model.addAttribute("classes", courseFrontVo.getClasses());
         model.addAttribute("courseTypeId", courseFrontVo.getCourseTypeId());

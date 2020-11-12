@@ -36,17 +36,21 @@
             courseTypeId: [[${courseTypeId}]],
             isTime: [[${isTime}]],
             pageNum: [[${pageNum}]],
-            pageSize: 12
+            pageSize: 12,
+            isFirstPage: [[${isFirstPage}]],
+            isLastPage: [[${isLastPage}]]
 
         }
 
         function setClasses(classes) {
             courseFrontVo.classes = classes;
+            courseFrontVo.pageNum = 1;
             explore();
         }
 
         function setCourseTypeId(courseTypeId) {
             courseFrontVo.courseTypeId = courseTypeId;
+            courseFrontVo.pageNum = 1;
             explore();
         }
 
@@ -54,6 +58,49 @@
             $(".courseType").click(function () {
                 let name = $(this).attr("name");
                 setCourseTypeId(name);
+            })
+
+            $("#previous").click(function () {
+                if (courseFrontVo.isFirstPage) {
+                    return ;
+                }
+                courseFrontVo.pageNum--;
+                explore();
+            })
+
+            $("#next").click(function () {
+                if (courseFrontVo.isLastPage) {
+                    return ;
+                }
+                courseFrontVo.pageNum++;
+                explore();
+            })
+
+            $(".pageNum").click(function () {
+                let name = $(this).attr("name");
+                if (name == courseFrontVo.pageNum) {
+                    return ;
+                }
+                courseFrontVo.pageNum = name;
+                explore();
+            })
+
+            $("#time").click(function () {
+                if (courseFrontVo.isTime) {
+                    return;
+                }
+                courseFrontVo.isTime = true;
+                courseFrontVo.pageNum = 1;
+                explore();
+            })
+
+            $("#viewCount").click(function () {
+                if (!courseFrontVo.isTime) {
+                    return ;
+                }
+                courseFrontVo.isTime = false;
+                courseFrontVo.pageNum = 1;
+                explore();
             })
         })
 
@@ -67,9 +114,8 @@
                 path += "&courseTypeId=" + courseFrontVo.courseTypeId;
             }
 
-            if (courseFrontVo.isTime) {
-                path += "&isTime=" + courseFrontVo.isTime;
-            }
+            path += "&isTime=" + courseFrontVo.isTime;
+
             location.href = path;
         }
     </script>
@@ -162,7 +208,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="active" href="courses/index.html" >全部课程</a></li>
+                        <li><a class="active" href="course/explore?pageNum=1&pageSize=12&isTime=true" >全部课程</a></li>
                         <li><a class="" href="courses/index.html?status=preview" >即将上线</a></li>
                         <li><a class="" href="developer/index.html">开发者</a></li>
                     </ul>
@@ -245,8 +291,8 @@
     </div>
     <div class="content position-relative">
         <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="/courses/?course_type=all&amp;tag=all&amp;fee=all">最新</a></li>
-            <li class=""><a href="/courses/?status=preview" class="stat-event" data-stat="preview_course">最热</a></li>
+            <li th:class="${isTime ? 'active' : ''}" id="time"><a href="javascript:void(0);">最新</a></li>
+            <li th:class="${isTime ? '' : 'active'}" id="viewCount"><a href="javascript:void(0);" class="stat-event" data-stat="preview_course">最热</a></li>
         </ul>
         <div class="clearfix"></div>
         <div class="search-result"></div>
@@ -293,66 +339,29 @@
 
 <nav class="pagination-container">
     <ul class="pagination">
-        
-        <li class="disabled">
-            <a href="#" aria-label="Previous">
-                <span aria-hidden="true">上一页</span>
+
+        <li th:class="${ isFirstPage ? 'disabled' : ''}">
+            <a href="javascript:void(0);" aria-label="Previous" id="previous">
+                <span aria-hidden="true" >上一页</span>
             </a>
         </li>
         
         
         
-        <li class="active">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=1">1</a>
+        <li th:each="num : ${pageNums}" th:class="${num == pageNum ? 'active pageNum' : 'pageNum'}" th:name="${num}">
+            <a href="javascript:void(0);" th:text="${num}"></a>
         </li>
         
         
         
-        <li class="">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=2">2</a>
-        </li>
+
         
         
         
-        <li class="">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=3">3</a>
-        </li>
-        
-        
-        
-        <li class="">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=4">4</a>
-        </li>
-        
-        
-        
-        <li class="">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=5">5</a>
-        </li>
-        
-        
-        
-        <li>
-            <a href='#'>...</a>
-        </li>
-        
-        
-        
-        <li class="">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=24">24</a>
-        </li>
-        
-        
-        
-        <li class="">
-            <a href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=25">25</a>
-        </li>
-        
-        
-        
-        <li class="">
-            <a aria-label="Next" href="/courses/?course_type=all&amp;tag=all&amp;fee=all&amp;page=2">
-                <span aria-hidden="true">下一页</span>
+        <li  th:class="${ isLastPage ? 'disabled' : ''}">
+
+            <a href="javascript:void(0);" aria-label="Previous" id="next">
+                <span aria-hidden="true" >下一页</span>
             </a>
         </li>
         
