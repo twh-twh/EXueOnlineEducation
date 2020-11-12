@@ -41,7 +41,6 @@ public class BackstageController {
 
     @GetMapping("explore")
     public String explore() {
-        System.out.println("进来了");
         return "course_index";
     }
 
