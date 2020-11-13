@@ -18,6 +18,8 @@
             <id column="teacher_id" property="id" />
         </association>
     </resultMap>
+    
+
 
     <insert id="insertCourse">
         insert into course(id, teacher_id, course_type, title, intro, price, lesson_num, cover, view_count, status, is_deleted, creation_time, update_time)
@@ -78,8 +80,8 @@
     </select>
 
     <select id="selectCourseSort" resultType="com.exue.entity.Course">
-        select id,  title,  price, cover, view_count as 'viewCount'
-        from course
+        select c.id,  c.title,  price, cover, view_count as 'viewCount'
+        from course c join course_type ct on c.course_type = ct.id
         where
         <if test="courseTypeId != null">
             course_type = #{courseTypeId} and
@@ -87,10 +89,13 @@
         <if test="price != null">
             price = #{price} and
         </if>
-        status = 1 and is_deleted = 0
+        <if test="search != null">
+            (ct.title like #{search} or c.title like #{search}) and
+        </if>
+        status = 1 and c.is_deleted = 0
         order by
         <if test="isTime">
-            creation_time desc
+            c.creation_time desc
         </if>
         <if test="!isTime">
             view_count desc
@@ -119,10 +124,13 @@
 
     <select id="selectCourseSortByActivity" resultType="com.exue.entity.Course">
         select c.id,  c.title,  c.price, c.cover, c.view_count as 'viewCount'
-        from course c join activity a on c.id = a.course_id
+        from course c join activity a on c.id = a.course_id join course_type ct on c.course_type = ct.id
         where
         <if test="courseTypeId != null">
             course_type = #{courseTypeId} and
+        </if>
+        <if test="search != null">
+            (ct.title like #{search} or c.title like #{search}) and
         </if>
         status = 1 and c.is_deleted = 0 and a.is_deleted = 0
         order by
@@ -136,12 +144,15 @@
 
     <select id="selectCourseSortBySale" resultType="com.exue.entity.Course">
         select c.id,  c.title,  c.price, c.cover, c.view_count as 'viewCount'
-        from course c join sale s on c.id = s.course_id
+        from course c join sale s on c.id = s.course_id join course_type ct on c.course_type = ct.id
         where
         <if test="courseTypeId != null">
             course_type = #{courseTypeId} and
         </if>
-        status = 1 and c.is_deleted = 0 and s.is_deleted = 0
+        <if test="search != null">
+            (ct.title like #{search} or c.title like #{search}) and
+        </if>
+        s.expiration_time >= NOW() and status = 1 and c.is_deleted = 0 and s.is_deleted = 0
         order by
         <if test="isTime">
             c.creation_time desc
@@ -150,6 +161,34 @@
             view_count desc
         </if>
     </select>
+    <select id="selectCourseById" resultMap="particularSelectMap">
+        select c.id, c.teacher_id, c.course_type, c.title, c.`describe`, c.intro, c.price, c.lesson_num, c.cover, c.view_count,
+               t.name, t.intro as 't.intro', t.avatar, ct.title as 'ct.title'
+        from course c join teacher t on c.teacher_id = t.id
+        join course_type ct on c.course_type = ct.id
+        where c.id = #{id} and c.is_deleted = 0
+    </select>
 
-
+    <resultMap id="particularSelectMap" type="Course">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="intro" property="intro" />
+        <result column="price" property="price" />
+        <result column="cover" property="cover" />
+        <result column="lesson_num" property="lessonNum" />
+        <result column="view_count" property="viewCount" />
+        <result column="status" property="status" />
+        <result column="creation_time" property="creationTime" />
+        <result column="describe" property="describe" />
+        <association property="teacher" javaType="Teacher">
+            <id column="teacher_id" property="id" />
+            <result column="name" property="name" />
+            <result column="t.intro" property="intro" />
+            <result column="avatar" property="avatar" />
+        </association>
+        <association property="courseType" javaType="CourseType">
+            <id column="course_type" property="id" />
+            <result column="ct.title" property="title" />
+        </association>
+    </resultMap>
 </mapper>

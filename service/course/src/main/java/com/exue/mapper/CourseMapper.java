@@ -29,9 +29,10 @@ public interface CourseMapper {
      * @param isTime 是不是时间
      * @param courseTypeId 课程类型id
      * @param price 价格
+     * @param search 搜索条件
      * @return
      */
-    List<Course> selectCourseSort(@Param("price") Integer price, @Param("courseTypeId") String courseTypeId, @Param("isTime") Boolean isTime);
+    List<Course> selectCourseSort(@Param("price") Integer price, @Param("courseTypeId") String courseTypeId, @Param("search") String search, @Param("isTime") Boolean isTime);
 
 
     /**
@@ -84,17 +85,25 @@ public interface CourseMapper {
      * 多条件查询带排序
      * @param isTime 是不是时间
      * @param courseTypeId 课程类型id
+     * @param search 搜索条件
      * @return
      */
-    List<Course> selectCourseSortByActivity(@Param("courseTypeId") String courseTypeId, @Param("isTime") Boolean isTime);
+    List<Course> selectCourseSortByActivity(@Param("courseTypeId") String courseTypeId, @Param("search") String search, @Param("isTime") Boolean isTime);
 
 
     /**
      * 多条件查询带排序
      * @param isTime 是不是时间
      * @param courseTypeId 课程类型id
+     * @param search 搜索条件
      * @return
      */
-    List<Course> selectCourseSortBySale( @Param("courseTypeId") String courseTypeId,  @Param("isTime") Boolean isTime);
+    List<Course> selectCourseSortBySale( @Param("courseTypeId") String courseTypeId, @Param("search") String search, @Param("isTime") Boolean isTime);
 
+    /**
+     * 根据id查询课程
+     * @param id
+     * @return
+     */
+    Course selectCourseById(String id);
 }

@@ -29,6 +29,12 @@ public class Course {
     private String title;
 
     /**
+     * 描述
+     */
+    private String describe;
+
+
+    /**
      * 简介
      */
     private String intro;
@@ -62,6 +68,8 @@ public class Course {
      * 评论
      */
     private List<Comment> comments;
+
+    private List<Section> sections;
 
     /**
      * 逻辑删除

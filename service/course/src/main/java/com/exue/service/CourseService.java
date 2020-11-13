@@ -53,4 +53,9 @@ public interface CourseService {
     List<Course> getAllCourse(Integer pageNum, Integer pageSize, CourseFrontVo courseFrontVo);
 
 
+    /**
+     * 根据id获取课程全部信息
+     * @return
+     */
+    Course getCourseAllMsgById(String courseId);
 }

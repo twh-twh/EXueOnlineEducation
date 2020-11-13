@@ -27,6 +27,11 @@ public class CourseFrontVo {
     private Boolean isTime;
 
     /**
+     * 搜索内容
+     */
+    private String search;
+
+    /**
      * 当前页面
      */
     private Integer pageNum;

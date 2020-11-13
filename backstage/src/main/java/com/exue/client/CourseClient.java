@@ -35,4 +35,12 @@ public interface CourseClient {
      */
     @GetMapping("/course/type/getAllType")
     Result getAllType();
+
+    /**
+     * 获取课程详细信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/course/info/getCourse/{id}")
+    Result getCourse(@PathVariable("id") String id);
 }
