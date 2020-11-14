@@ -8,7 +8,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.Source;
 import java.util.List;
 
 /**
@@ -49,9 +48,10 @@ public class CourseController {
         return Result.ok().data("courses", pageInfo);
     }
 
-    @GetMapping("getCourse/{id}")
-    public Result getCourse(@PathVariable("id") String id) {
-        Course course = courseService.getCourseAllMsgById(id);
+    @GetMapping("getCourse/{id}/{userId}")
+    public Result getCourse(@PathVariable("id") String id, @PathVariable("userId") String userId) {
+
+        Course course = courseService.getCourseAllMsgById(id, userId);
 
         return Result.ok().data("course", course);
     }

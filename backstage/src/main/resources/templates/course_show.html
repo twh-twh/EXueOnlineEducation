@@ -10,11 +10,8 @@
   <meta http-equiv="Cache-Control" content="no-siteapp">
   <meta name="csrf-token" content="1483780974##87f89328c5616669f00302a263fe9061bb852818">
   <base th:href="@{/}">
-        <title th:text="${course.courseType.title} + ' - ' + ${course.title}">C/C++ - C++ 经典项目实战 - 实验楼</title>
-		
-	
+    <title th:text="${course.courseType.title} + ' - ' + ${course.title}">C/C++ - C++ 经典项目实战 - 实验楼</title>
 
-    
 <meta content="实验楼课程分为基础课和项目课，内容涵盖了Linux、Python、Java、C语言、Ruby、Android、IOS开发、大数据、信息安全等IT技术领域。" name="description">
 <meta content="实验楼课程,IT培训课程,IT实训课程,IT在线课程,all" name="keywords">
 
@@ -29,7 +26,8 @@
 	<link rel="stylesheet" href="app/css/dest/styles.css?=2016121272249">
     <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
     <script th:inline="javascript">
-        let id = [[${course.id}]]
+        let id = [[${course.id}]];
+        let collectId = [[${course.collectId}]];
 
         $(function () {
             $("#purchase").unbind();
@@ -39,7 +37,6 @@
             $(".section").click(function () {
                 $(this).children(".video").toggle();
             })
-
 
             $("#purchase").click(function () {
                 $("#bootcamp-pay-modal").modal("show");
@@ -52,14 +49,35 @@
             $("#collect").unbind();
             $("#collect").click(function () {
                 let hasClass = $(this).hasClass("fa-star-o");
+                let $this = $(this);
                 if (hasClass) {
-                    $(this).removeClass("fa-star-o");
-                    $(this).addClass("fa-star");
-                } else {
-                    $(this).removeClass("fa-star");
-                    $(this).addClass("fa-star-o");
-                }
 
+                    $.ajax({
+                        url: "http://localhost:8805/collect/info/add/" + id + "/" + "980825",
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code == 20000) {
+                                $($this).removeClass("fa-star-o");
+                                $($this).addClass("fa-star");
+                                collectId = result.data.collectId;
+                            }
+                        }
+                    })
+                } else {
+                    let $this = $(this);
+                    $.ajax({
+                        url: "http://localhost:8805/collect/info/delete/" + collectId,
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code == 20000) {
+                                $($this).removeClass("fa-star");
+                                $($this).addClass("fa-star-o");
+                            }
+                        }
+                    })
+                }
             })
         })
 
@@ -383,7 +401,7 @@
                 <span class="course-infobox-followers" th:text="${course.viewCount}"></span>
                 <span>播放量</span>
 <!--                fa-star  fa-star-o collect-->
-                <i id="collect" class="fa fa-star" data-next="/login?next=%2Fcourses%2F454"></i>
+                <i id="collect" th:class="${course.collectId != null ? 'fa fa-star' : 'fa fa-star-o'}" data-next="/login?next=%2Fcourses%2F454"></i>
                 
             </div>
         </div>

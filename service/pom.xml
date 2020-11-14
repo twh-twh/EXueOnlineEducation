@@ -15,6 +15,7 @@
         <module>user</module>
         <module>learning</module>
         <module>comment</module>
+        <module>collect</module>
     </modules>
 
 

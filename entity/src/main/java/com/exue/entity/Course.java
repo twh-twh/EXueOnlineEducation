@@ -60,6 +60,11 @@ public class Course {
     private String orderId;
 
     /**
+     * 收藏id
+     */
+    private String collectId;
+
+    /**
      *  预计总课时
      */
     private Integer lessonNum;

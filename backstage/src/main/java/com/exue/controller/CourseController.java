@@ -62,7 +62,7 @@ public class CourseController {
 
     @GetMapping("show/{id}")
     public String show(@PathVariable("id") String id, Model model) {
-        Result course = courseClient.getCourse(id);
+        Result course = courseClient.getCourse(id, "980825");
         Result commentCount = commentClient.getCount(id);
         model.addAttribute("course", course.getData().get("course"));
         model.addAttribute("commentCount", commentCount.getData().get("commentCount"));

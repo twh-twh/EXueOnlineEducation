@@ -173,17 +173,24 @@
 
     <select id="selectCourseById" resultMap="particularSelectMap">
         select c.id, c.teacher_id, c.course_type, c.title, c.`describe`, c.intro, c.price, c.lesson_num, c.cover, c.view_count,
-               t.name, t.intro as 't.intro', t.avatar, ct.title as 'ct.title', a.price as 'specialOffer',
+               t.name, t.intro as 't.intro', t.avatar, ct.title as 'ct.title', a.price as 'specialOffer',o.id AS 'orderId', cl.id AS 'collectId',
                case when s.is_deleted = 1 then NULL
                     when s.expiration_time >= now() then s.id
-                    else NULL end AS 'saleId',
-               case when o.user_id = '980825' THEN o.id
-                    ELSE NULL END AS 'orderId'
+                    else NULL end AS 'saleId'
         from course c join teacher t on c.teacher_id = t.id
                       join course_type ct on c.course_type = ct.id
                       LEFT JOIN activity a on a.course_id = c.id
                       LEFT JOIN sale s ON s.course_id = c.id
-                      LEFT JOIN `order` o ON c.id = o.course_id
+                      LEFT JOIN (
+                        SELECT id,course_id, user_id
+                        FROM `order`
+                        WHERE user_id = "980825"
+                    ) o ON c.id = o.course_id
+                                  LEFT JOIN (
+                        SELECT id,course_id, user_id
+                        FROM collect
+                        WHERE user_id = "980825"
+                    ) cl ON c.id = cl.course_id
         where c.id = #{id} and c.is_deleted = 0
     </select>
 
@@ -201,6 +208,7 @@
         <result column="specialOffer" property="specialOffer" />
         <result column="saleId" property="saleId" />
         <result column="orderId" property="orderId" />
+        <result column="collectId" property="collectId" />
         <association property="teacher" javaType="Teacher">
             <id column="teacher_id" property="id" />
             <result column="name" property="name" />

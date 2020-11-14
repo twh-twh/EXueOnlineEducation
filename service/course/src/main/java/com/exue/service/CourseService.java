@@ -55,7 +55,9 @@ public interface CourseService {
 
     /**
      * 根据id获取课程全部信息
+     * @param courseId
+     * @param userId
      * @return
      */
-    Course getCourseAllMsgById(String courseId);
+    Course getCourseAllMsgById(String courseId, String userId);
 }

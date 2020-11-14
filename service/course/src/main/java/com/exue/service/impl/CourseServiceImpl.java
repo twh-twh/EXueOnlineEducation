@@ -92,9 +92,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course getCourseAllMsgById(String courseId) {
+    public Course getCourseAllMsgById(String courseId, String userId) {
         //获取课程
-        Course course = courseMapper.selectCourseById(courseId);
+        Course course = courseMapper.selectCourseById(courseId, userId);
 
         //获取课程下的所有章节 章节中会获取下面所有的视频
         List<Section> sections = sectionService.getAllSectionByCourseId(courseId);

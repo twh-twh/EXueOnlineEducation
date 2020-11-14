@@ -39,8 +39,9 @@ public interface CourseClient {
     /**
      * 获取课程详细信息
      * @param id
+     * @param userId
      * @return
      */
-    @GetMapping("/course/info/getCourse/{id}")
-    Result getCourse(@PathVariable("id") String id);
+    @GetMapping("/course/info/getCourse/{id}/{userId}")
+    Result getCourse(@PathVariable("id") String id, @PathVariable("userId") String userId);
 }

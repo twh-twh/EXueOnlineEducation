@@ -23,7 +23,7 @@ public class Collect {
     /**
      * 学员id
      */
-    private User user;
+    private String userId;
 
     /**
      * 创建时间
