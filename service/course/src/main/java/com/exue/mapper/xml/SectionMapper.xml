@@ -36,7 +36,7 @@
     <select id="selectAllByCourseId" resultType="com.exue.entity.Section">
         select id, course_id as 'courseId', title
         from section
-        where is_deleted = 0
+        where course_id = #{courseId} and is_deleted = 0
         order by sort
     </select>
 

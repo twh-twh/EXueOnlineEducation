@@ -45,6 +45,16 @@ public class Course {
     private Integer price;
 
     /**
+     * 特别价
+     */
+    private Integer specialOffer;
+
+    /**
+     * 限免id
+     */
+    private String saleId;
+
+    /**
      *  预计总课时
      */
     private Integer lessonNum;

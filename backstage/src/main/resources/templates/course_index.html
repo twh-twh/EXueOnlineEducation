@@ -173,6 +173,29 @@
             color: #fa3d2e;
             font-size: 20px;
         }
+
+        .course-img {
+            position: relative;
+        }
+
+        .sale {
+            position: absolute;
+            z-index: 2;
+            top: 0px;
+            left: 0px;
+            width: 40px !important;
+            height: 40px !important;
+            display: block !important;
+        }
+        .activity {
+            position: absolute;
+            z-index: 2;
+            top: -5px;
+            left: -5px;
+            width: 40px !important;
+            height: 40px !important;
+            display: block !important;
+        }
     </style>
 	
 
@@ -319,7 +342,8 @@
                     <div class="course-img">
 
                         <img th:alt="${course.title}" th:src="${course.cover}">
-
+                        <img src="img/sale.png" th:class="${course.saleId != null ? 'sale': ''}" style="display: none">
+                        <img src="img/activity.png" th:class="${course.specialOffer != null ? 'activity' : ''}" style="display: none">
                     </div>
 
                     <div class="course-body">
@@ -334,8 +358,9 @@
                         </span>
 
 
-                        <span class="money" th:text="'￥' + ${course.price}">
-
+                        <span class="money" th:text="${course.saleId != null ? '免费' :
+                        course.specialOffer != null ? '特价: ' + (course.specialOffer / 100) + '.' + (course.specialOffer % 100) :
+                        '￥' + (course.price / 100) + '.' + (course.price % 100)}">
                         </span>
                     </div>
                 </a>

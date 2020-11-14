@@ -20,7 +20,7 @@ public class Sale {
     /**
      * 到期时间
      */
-    private Date expiration_time;
+    private Date expirationTime;
 
     /**
      * 逻辑删除
