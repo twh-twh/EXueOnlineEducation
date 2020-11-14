@@ -1,6 +1,7 @@
 package com.exue.service.impl;
 
 import com.exue.annotation.PageAnnotation;
+import com.exue.client.CommentClient;
 import com.exue.entity.Course;
 import com.exue.entity.Section;
 import com.exue.entity.frontvo.CourseFrontVo;
@@ -31,6 +32,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private SectionService sectionService;
+
+    @Autowired
+    private CommentClient commentClient;
 
 
     @Override

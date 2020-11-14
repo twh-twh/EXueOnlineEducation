@@ -55,6 +55,11 @@ public class Course {
     private String saleId;
 
     /**
+     * 订单id
+     */
+    private String orderId;
+
+    /**
      *  预计总课时
      */
     private Integer lessonNum;

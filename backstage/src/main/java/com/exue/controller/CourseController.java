@@ -1,5 +1,6 @@
 package com.exue.controller;
 
+import com.exue.client.CommentClient;
 import com.exue.client.CourseClient;
 import com.exue.client.LearningPathClient;
 import com.exue.entity.frontvo.CourseFrontVo;
@@ -26,6 +27,9 @@ public class CourseController {
 
     @Autowired
     private LearningPathClient learningPathClient;
+
+    @Autowired
+    private CommentClient commentClient;
 
     @GetMapping("explore")
     public String explore(CourseFrontVo courseFrontVo, Model model) {
@@ -59,8 +63,9 @@ public class CourseController {
     @GetMapping("show/{id}")
     public String show(@PathVariable("id") String id, Model model) {
         Result course = courseClient.getCourse(id);
-
+        Result commentCount = commentClient.getCount(id);
         model.addAttribute("course", course.getData().get("course"));
+        model.addAttribute("commentCount", commentCount.getData().get("commentCount"));
 
         return "course_show";
     }

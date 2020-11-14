@@ -28,7 +28,9 @@
     <link rel="stylesheet" href="app/css/libs/videojs/5.11.7/video-js.min.css">
 	<link rel="stylesheet" href="app/css/dest/styles.css?=2016121272249">
     <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
-    <script>
+    <script th:inline="javascript">
+        let id = [[${course.id}]]
+
         $(function () {
             $("#purchase").unbind();
             $(".section").children(".video").hide();
@@ -42,9 +44,135 @@
             $("#purchase").click(function () {
                 $("#bootcamp-pay-modal").modal("show");
             })
+
+            $(".stat-event").click(function () {
+                getAllComment(1, 10, id);
+            })
+
+            $("#collect").unbind();
+            $("#collect").click(function () {
+                let hasClass = $(this).hasClass("fa-star-o");
+                if (hasClass) {
+                    $(this).removeClass("fa-star-o");
+                    $(this).addClass("fa-star");
+                } else {
+                    $(this).removeClass("fa-star");
+                    $(this).addClass("fa-star-o");
+                }
+
+            })
         })
 
+        function getAllComment(pageNum, pageSize) {
+            $(".comment-list").html("");
+            $.ajax({
+                url: "http://localhost:8804/comment/info/getAll",
+                data: {
+                    "courseId": id,
+                    "pageNum": pageNum,
+                    "pageSize": pageSize
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    let comments = result.data.comments;
+                    let length = comments.length;
+                    for (let i = 0; i < length; i++) {
+                        let str = generatedComments(comments[i]);
+                        $(".comment-list").append(str);
+                    }
 
+                    let commentPage = {
+                        pageNum: result.data.pageNum,
+                        pageSize: result.data.pageSize,
+                        isFirstPage: result.data.isFirstPage,
+                        isLastPage: result.data.isLastPage,
+                        pageNums: result.data.pageNums
+                    }
+
+                    $(".pagination-container").html(commentPaging(commentPage));
+                }
+            })
+        }
+
+        function generatedComments(comment) {
+            return `
+<div class="answer-item">
+<div class="answer-head">
+
+<div class="user-avatar ">
+<a class="avatar" href="/user/347060" target="_blank">
+<img src="${comment.user.avatar}">
+</a>
+
+</div>
+
+</div>
+<div class="answer-detail">
+<span class="comment-reply">
+    <div class="user-username ">
+        <a class="username" href="/user/347060" target="_blank">
+            ${comment.user.nickname}
+        </a>
+        <span class="user-level">L4</span>
+</div>
+
+</span>
+
+<div class="answer-content markdown-body">
+<div> ${comment.content}
+</div>
+<span style="float: right">${comment.creationTime}</span>
+</div>
+
+<div>
+
+<hr/>
+</div>
+</div>
+</div>
+`
+        }
+
+        function commentPaging(commentPage) {
+            let previous = `
+            <nav class="pagination-container">
+            <ul class="pagination">
+
+            <li class="${ commentPage.isFirstPage ? 'disabled' : ''}"
+                onclick="getAllComment(${commentPage.pageNum - 1}, 10)"
+            >
+                <a href="javascript:void(0);" aria-label="Previous" id="previous">
+                    <span aria-hidden="true" >上一页</span>
+                </a>
+            </li>
+            `;
+            let pageCode = '';
+            let length = commentPage.pageNums.length;
+            for (let i = 0; i < length; i++) {
+                pageCode += `
+                    <li class="${commentPage.pageNums[i] == commentPage.pageNum ? 'active pageNum' : 'pageNum'}"
+                        onclick="getAllComment(${commentPage.pageNums[i]}, 10)"
+                    >
+                        <a href="javascript:void(0);">${commentPage.pageNums[i]}</a>
+                    </li>
+                `
+            }
+
+            let next = `
+            <li  class="${ commentPage.isLastPage ? 'disabled' : ''}"
+                onclick="getAllComment(${commentPage.pageNum + 1}, 10)">
+
+                        <a href="javascript:void(0);" aria-label="Previous" id="next">
+                            <span aria-hidden="true" >下一页</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+                        `;
+            return previous + pageCode + next;
+        }
     </script>
 
 
@@ -151,7 +279,7 @@
 
 <!--       首页开始 -->
 <nav class="navbar navbar-default navbar-fixed-top header">
-    <div class="container">
+    <div class="container" >
 
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse" aria-expanded="false">
@@ -246,7 +374,7 @@
                 
                 <span class="course-infobox-type" data-course-type="1">课程</span>
                 
-                <span th:text="${course.title}">C++ 经典项目实战</span>
+                <span th:text="${course.title}"></span>
                 
             </h4>
             <div class="pull-right course-infobox-follow"
@@ -254,8 +382,8 @@
                 data-unfollow-url="/courses/454/unfollow">
                 <span class="course-infobox-followers" th:text="${course.viewCount}"></span>
                 <span>播放量</span>
-                
-                <i class="fa fa-star-o" data-next="/login?next=%2Fcourses%2F454"></i>
+<!--                fa-star  fa-star-o collect-->
+                <i id="collect" class="fa fa-star" data-next="/login?next=%2Fcourses%2F454"></i>
                 
             </div>
         </div>
@@ -263,7 +391,12 @@
             <div class="course-infobox-content">
             <p th:text="${course.describe}"></p>
 
-            <a class="btn btn-success online-consultant" data-toggle="modal" data-target="#askquestion">加入学习</a>
+            <a class="btn btn-success online-consultant" data-toggle="modal" data-target="#askquestion">
+                <span th:if="${course.orderId != null}">开始学习</span>
+                <span th:unless="${course.orderId != null}">
+                    <span th:text="${course.price == 0 or course.saleId != null ? '免费加入学习' : '立即购买'}"></span>
+                </span>
+            </a>
             
             </div>
             
@@ -273,7 +406,7 @@
             </div>
         </div>
         
-        <div class="clearfix bootcamp-infobox">
+        <div class="clearfix bootcamp-infobox" th:if="${course.orderId == null}">
             <div class="bootcamp-infobox-footer">
 
                 <div class="col-md-3 bootcamp-infobox-msg">
@@ -322,7 +455,7 @@
             </li>
             
             <li role="presentation">
-                <a href="#comments" class="stat-event" aria-controls="comments" role="tab" data-stat="course_comment" data-toggle="tab">课程评论(22)</a>
+                <a href="#comments" class="stat-event" aria-controls="comments" role="tab" data-stat="course_comment" data-toggle="tab" th:text="'课程评论(' + ${commentCount} + ')'"></a>
             </li>
         </ul>
         <div class="tab-content">
@@ -368,6 +501,7 @@
                     </div>
                     <div class="comment-title">最新评论</div>
                     <div class="comment-list">
+                        
                     </div>
                     <div class="pagination-container"></div>
                 </div>
