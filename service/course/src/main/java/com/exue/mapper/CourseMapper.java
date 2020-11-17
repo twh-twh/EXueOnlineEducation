@@ -107,4 +107,11 @@ public interface CourseMapper {
      * @return
      */
     Course selectCourseById(@Param("id") String id, @Param("userId") String userId);
+
+    /**
+     * 根据老师id查询课程
+     * @param teacherId
+     * @return
+     */
+    List<Course> selectCourseByTeacherId(String teacherId);
 }

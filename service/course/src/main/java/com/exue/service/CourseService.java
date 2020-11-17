@@ -60,4 +60,13 @@ public interface CourseService {
      * @return
      */
     Course getCourseAllMsgById(String courseId, String userId);
+
+    /**
+     * 根据老师id获取课程
+     * @param pageNum
+     * @param pageSize
+     * @param teacherId
+     * @return
+     */
+    List<Course> getCoursesByTeacherId(Integer pageNum, Integer pageSize, String teacherId);
 }

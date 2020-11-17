@@ -38,4 +38,9 @@
         from teacher
         where is_deleted = 0
     </select>
+    <select id="selectTeacherById" resultType="com.exue.entity.Teacher">
+        select id, name, intro, avatar
+        from teacher
+        where id = #{id}
+    </select>
 </mapper>

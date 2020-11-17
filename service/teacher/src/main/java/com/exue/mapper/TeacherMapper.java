@@ -34,7 +34,11 @@ public interface TeacherMapper {
      */
     List<Teacher> getTeachers();
 
-
-
+    /**
+     * 根据id获取讲师
+     * @param id
+     * @return
+     */
+    Teacher selectTeacherById(String id);
 
 }

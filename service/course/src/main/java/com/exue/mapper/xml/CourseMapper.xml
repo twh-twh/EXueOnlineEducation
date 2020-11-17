@@ -194,6 +194,12 @@
         where c.id = #{id} and c.is_deleted = 0
     </select>
 
+    <select id="selectCourseByTeacherId" resultType="com.exue.entity.Course">
+        select id, title, cover, view_count as "viewCount"
+        from course
+        where teacher_id = #{teacherId}
+    </select>
+
     <resultMap id="particularSelectMap" type="Course">
         <id column="id" property="id" />
         <result column="title" property="title" />

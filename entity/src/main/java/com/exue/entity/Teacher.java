@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 讲师
@@ -31,7 +32,10 @@ public class Teacher  implements Serializable {
      */
     private String avatar;
 
-
+    /**
+     * 课程
+     */
+    private List<Course> courses;
 
     /**
      * 逻辑删除

@@ -55,4 +55,11 @@ public class CourseController {
 
         return Result.ok().data("course", course);
     }
+
+    @GetMapping("getTeacherOtherCourse")
+    public Result getTeacherOtherCourse(Integer pageNum, Integer pageSize, String teacherId) {
+        List<Course> courses = courseService.getCoursesByTeacherId(pageNum, pageSize, teacherId);
+
+        return Result.ok().data("courses", courses);
+    }
 }

@@ -36,4 +36,12 @@ public interface TeacherService {
      */
     List<Teacher> getTeachers(Integer pageNum, Integer pageSize);
 
+    /**
+     * 获取讲师
+     * @param pageNum
+     * @param pageSize
+     * @param id
+     * @return
+     */
+    Teacher getTeacher(Integer pageNum, Integer pageSize, String id);
 }

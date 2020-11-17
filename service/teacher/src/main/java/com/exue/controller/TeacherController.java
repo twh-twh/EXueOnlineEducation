@@ -38,4 +38,10 @@ public class TeacherController {
         return Result.ok();
     }
 
+    @GetMapping("getTeacher")
+    public Result getTeacher(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("teacherId") String teacherId) {
+        Teacher teacher = teacherService.getTeacher(pageNum, pageSize, teacherId);
+        return Result.ok().data("teacher", teacher);
+    }
+
 }

@@ -106,5 +106,12 @@ public class CourseServiceImpl implements CourseService {
         return course;
     }
 
+    @Override
+    @PageAnnotation
+    public List<Course> getCoursesByTeacherId(Integer pageNum, Integer pageSize, String teacherId) {
+        List<Course> courses = courseMapper.selectCourseByTeacherId(teacherId);
+        return courses;
+    }
+
 
 }

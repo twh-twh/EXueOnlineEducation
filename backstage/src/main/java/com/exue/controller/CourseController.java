@@ -3,6 +3,7 @@ package com.exue.controller;
 import com.exue.client.CommentClient;
 import com.exue.client.CourseClient;
 import com.exue.client.LearningPathClient;
+import com.exue.entity.Course;
 import com.exue.entity.frontvo.CourseFrontVo;
 import com.exue.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,14 @@ public class CourseController {
     @GetMapping("show/{id}")
     public String show(@PathVariable("id") String id, Model model) {
         Result course = courseClient.getCourse(id, "980825");
+        LinkedHashMap<String, Object> linkedHashMap = (LinkedHashMap)course.getData().get("course");
+
         Result commentCount = commentClient.getCount(id);
+        Result courses = courseClient.getTeacherOtherCourse(1, 10, ((LinkedHashMap)linkedHashMap.get("teacher")).get("id").toString());
+
         model.addAttribute("course", course.getData().get("course"));
         model.addAttribute("commentCount", commentCount.getData().get("commentCount"));
+        model.addAttribute("courses", courses.getData().get("courses"));
 
         return "course_show";
     }
