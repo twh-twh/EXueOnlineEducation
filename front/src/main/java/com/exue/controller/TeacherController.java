@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/teacher")
 public class TeacherController {
+
+    @ModelAttribute("active")
+    public String active() {
+        return "teacher";
+    }
 
     @Autowired
     private TeacherClient teacherClient;
@@ -24,6 +30,11 @@ public class TeacherController {
 
         model.addAttribute("teacher", teacher.getData().get("teacher"));
         return "teacher";
+    }
+
+    @GetMapping("index")
+    public String index() {
+        return "teacher_index";
     }
 
 }

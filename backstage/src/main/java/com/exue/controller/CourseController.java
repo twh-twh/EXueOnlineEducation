@@ -3,7 +3,7 @@ package com.exue.controller;
 import com.exue.client.CommentClient;
 import com.exue.client.CourseClient;
 import com.exue.client.LearningPathClient;
-import com.exue.entity.Course;
+
 import com.exue.entity.frontvo.CourseFrontVo;
 import com.exue.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import java.util.LinkedHashMap;
 
