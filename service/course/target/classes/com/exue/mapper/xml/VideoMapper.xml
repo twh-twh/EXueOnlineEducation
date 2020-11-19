@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exue.mapper.VideoMapper">
+
+
+    <insert id="insertVideo">
+        insert into video(id, section_id, title, path, sort, creation_time, update_time)
+        VALUES (#{id}, #{sectionId}, #{title}, #{path}, #{sort}, #{creationTime}, #{updateTime})
+    </insert>
+
+    <update id="updateVideo">
+        update video
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+
+            <if test="path != null">
+                `path` = #{path},
+            </if>
+            <if test="sort != null" >
+                sort = #{sort}
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVideById">
+        delete from video where id = #{id}
+    </delete>
+
+    <select id="selectVideByCourseId" resultType="com.exue.entity.Video">
+        select v.id, v.section_id as 'sectionId', v.title, v.path
+        from video v join section s on v.section_id = s.id
+        where s.course_id = #{id} and s.is_deleted = 0
+        order by v.sort
+    </select>
+
+</mapper>

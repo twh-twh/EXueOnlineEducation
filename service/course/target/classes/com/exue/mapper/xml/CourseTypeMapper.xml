@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exue.mapper.CourseTypeMapper">
+    <insert id="insertCourseType">
+        insert into course_type(id, title, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{title}, 0, #{creationTime}, #{updateTime})
+    </insert>
+
+    <update id="updateCourseType">
+        update course_type
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="deleteCourseTypeById">
+        update course_type
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+
+    <select id="selectAll" resultType="com.exue.entity.CourseType">
+        select id, title
+        from course_type
+        where is_deleted = 0
+    </select>
+</mapper>

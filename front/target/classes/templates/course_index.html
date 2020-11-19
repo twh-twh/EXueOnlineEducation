@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+  <meta http-equiv="Cache-Control" content="o-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="csrf-token" content="1483780974##87f89328c5616669f00302a263fe9061bb852818">
+
+    <base th:href="@{/}">
+
+    <title>全部 - 课程 - 实验楼</title>
+		
+	
+
+    
+<meta content="实验楼课程分为基础课和项目课，内容涵盖了Linux、Python、Java、C语言、Ruby、Android、IOS开发、大数据、信息安全等IT技术领域。" name="description">
+<meta content="实验楼课程,IT培训课程,IT实训课程,IT在线课程,all" name="keywords">
+
+    <meta content="" name="author">
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="app/css/libs/videojs/5.11.7/video-js.min.css">
+	<link rel="stylesheet" href="app/css/dest/styles.css?=2016121272249">
+    <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        courseFrontVo = {
+            classes : [[${classes}]],
+            courseTypeId: [[${courseTypeId}]],
+            isTime: [[${isTime}]],
+            pageNum: [[${pageNum}]],
+            pageSize: 12,
+            search: [[${search}]],
+            isFirstPage: [[${isFirstPage}]],
+            isLastPage: [[${isLastPage}]]
+
+        }
+
+        function setClasses(classes) {
+            courseFrontVo.classes = classes;
+            courseFrontVo.pageNum = 1;
+            explore();
+        }
+
+        function setCourseTypeId(courseTypeId) {
+            courseFrontVo.courseTypeId = courseTypeId;
+            courseFrontVo.pageNum = 1;
+            explore();
+        }
+
+        $(function () {
+            $(".courseType").click(function () {
+                let name = $(this).attr("name");
+                setCourseTypeId(name);
+            })
+
+            $("#previous").click(function () {
+                if (courseFrontVo.isFirstPage) {
+                    return ;
+                }
+                courseFrontVo.pageNum--;
+                explore();
+            })
+
+            $("#next").click(function () {
+                if (courseFrontVo.isLastPage) {
+                    return ;
+                }
+                courseFrontVo.pageNum++;
+                explore();
+            })
+
+            $(".pageNum").click(function () {
+                let name = $(this).attr("name");
+                if (name == courseFrontVo.pageNum) {
+                    return ;
+                }
+                courseFrontVo.pageNum = name;
+                explore();
+            })
+
+            $("#time").click(function () {
+                if (courseFrontVo.isTime) {
+                    return;
+                }
+                courseFrontVo.isTime = true;
+                courseFrontVo.pageNum = 1;
+                explore();
+            })
+
+            $("#viewCount").click(function () {
+                if (!courseFrontVo.isTime) {
+                    return ;
+                }
+                courseFrontVo.isTime = false;
+                courseFrontVo.pageNum = 1;
+                explore();
+            })
+        })
+
+        function explore() {
+            let path = "course/explore?pageNum=" + courseFrontVo.pageNum + "&pageSize=" + courseFrontVo.pageSize ;
+            if (courseFrontVo.classes) {
+                path += "&classes=" + courseFrontVo.classes;
+            }
+
+            if (courseFrontVo.courseTypeId) {
+                path += "&courseTypeId=" + courseFrontVo.courseTypeId;
+            }
+
+            if (courseFrontVo.search) {
+                path += "&search=" + courseFrontVo.search;
+            }
+
+            path += "&isTime=" + courseFrontVo.isTime;
+
+            location.href = path;
+        }
+    </script>
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url(" fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .money {
+            float: right;
+            color: #fa3d2e;
+            font-size: 20px;
+        }
+
+        .course-img {
+            position: relative;
+        }
+
+        .sale {
+            position: absolute;
+            z-index: 2;
+            top: 0px;
+            left: 0px;
+            width: 40px !important;
+            height: 40px !important;
+            display: block !important;
+        }
+        .activity {
+            position: absolute;
+            z-index: 2;
+            top: -5px;
+            left: -5px;
+            width: 40px !important;
+            height: 40px !important;
+            display: block !important;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+
+
+
+
+
+
+<!-- 头部开始 -->
+<nav th:replace="index::commonNav" ></nav>
+<!-- 头部结束 -->
+
+
+
+
+
+
+
+
+
+
+<!-- 课程信息开始 -->
+<div class="container layout layout-margin-top">
+
+
+    <div class="row">
+        <div class="col-md-9 layout-body">
+
+    <div class="content">
+        <div class="row course-cates">
+            <div class="col-md-1 course-cates-title">类别：</div>
+            <div class="col-md-11 course-cates-content">
+                <a th:class="${classes == null ? 'active' : ''}" href="javascript:void(0);" onclick="setClasses('')">全部</a>
+                <a th:class="${classes == 'free' ? 'active' : ''}" href="javascript:void(0);"  onclick="setClasses('free')">免费</a>
+                <a th:class="${classes == 'sale' ? 'active' : ''}" href="javascript:void(0);"  onclick="setClasses('sale')">限免</a>
+                <div th:class="${classes == 'activity' ? 'active course-cates-vip' : 'course-cates-vip'}">
+                    <img src="img/vip-icon.png">
+                    <a  href="javascript:void(0);"  onclick="setClasses('activity')">特价</a>
+                </div>
+            </div>
+        </div>
+        <div class="row course-cates">
+            <div class="col-md-1 course-cates-title">标签：</div>
+            <div class="col-md-11 course-cates-content">
+                <a th:class="${courseTypeId == null ? 'active' : ''}" href="javascript:void(0);" onclick="setCourseTypeId('')">全部</a>
+
+                <a th:class="${courseTypeId == courseType.id ? 'active courseType' : 'courseType'}" href="javascript:void(0);"
+                    th:name="${courseType.id}"
+                   th:each="courseType : ${courseTypes}" th:text="${courseType.title}
+                "></a>
+
+            </div>
+        </div>
+    </div>
+    <div class="content position-relative">
+        <ul class="nav nav-tabs" role="tablist">
+            <li th:class="${isTime ? 'active' : ''}" id="time"><a href="javascript:void(0);">最新</a></li>
+            <li th:class="${isTime ? '' : 'active'}" id="viewCount"><a href="javascript:void(0);" class="stat-event" data-stat="preview_course">最热</a></li>
+        </ul>
+        <div class="clearfix"></div>
+        <div class="search-result"></div>
+
+<!--        课程分页开始-->
+        <div class="row">
+            <div class="col-md-4 col-sm-6  course" th:each=" course : ${courses}">
+                <a class="course-box" th:href="'course/show/' + ${course.id}">
+                    <div class="sign-box">
+
+
+
+                        <i class="fa fa-star-o course-follow pull-right"
+                            data-follow-url="/courses/63/follow"
+                            data-unfollow-url="/courses/63/unfollow"  style="display:none"  ></i>
+
+                    </div>
+                    <div class="course-img">
+
+                        <img th:alt="${course.title}" th:src="${course.cover}">
+                        <img src="img/sale.png" th:class="${course.saleId != null ? 'sale': ''}" style="display: none">
+                        <img src="img/activity.png" th:class="${course.specialOffer != null ? 'activity' : ''}" style="display: none">
+                    </div>
+
+                    <div class="course-body">
+                        <span class="course-title" data-toggle="tooltip" data-placement="bottom" th:title="${course.title}" th:text="${course.title}"></span>
+                    </div>
+                    <div class="course-footer">
+                        <span class="course-per-num pull-left">
+                            <i class="fa fa-users"></i>
+
+                            <span th:text="${course.viewCount}"></span>
+
+                        </span>
+
+
+                        <span class="money" th:text="${course.saleId != null ? '免费' :
+                        course.specialOffer != null ? '特价: ' + (course.specialOffer / 100) + '.' + (course.specialOffer % 100) :
+                        '￥' + (course.price / 100) + '.' + (course.price % 100)}">
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </div>
+<!--        课程分页结束-->
+
+<nav class="pagination-container">
+    <ul class="pagination">
+
+        <li th:class="${ isFirstPage ? 'disabled' : ''}">
+            <a href="javascript:void(0);" aria-label="Previous" id="previous">
+                <span aria-hidden="true" >上一页</span>
+            </a>
+        </li>
+
+
+
+        <li th:each="num : ${pageNums}" th:class="${num == pageNum ? 'active pageNum' : 'pageNum'}" th:name="${num}">
+            <a href="javascript:void(0);" th:text="${num}"></a>
+        </li>
+
+
+
+
+
+
+
+        <li  th:class="${ isLastPage ? 'disabled' : ''}">
+
+            <a href="javascript:void(0);" aria-label="Previous" id="next">
+                <span aria-hidden="true" >下一页</span>
+            </a>
+        </li>
+
+    </ul>
+</nav>
+
+
+    </div>
+
+        </div>
+        <div class="col-md-3 layout-side">
+
+
+
+
+
+<div class="panel panel-default panel-userinfo">
+    <div class="panel-body body-userinfo">
+        <div class="media userinfo-header">
+            <div class="media-left">
+                <div class="user-avatar">
+
+                     <a class="avatar" href="#sign-modal" data-toggle="modal" data-sign="signin">
+                         <img class="circle" src=" img/logo-grey.png">
+                     </a>
+
+                </div>
+             </div>
+            <div class="media-body">
+
+                 <span class="media-heading username">欢迎来到实验楼</span>
+                 <p class="vip-remain">做实验，学编程</p>
+
+            </div>
+        </div>
+
+        <div class="row userinfo-data">
+
+            <hr>
+            <div class="btn-group-lr">
+            <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 login-btn" data-toggle="modal" data-sign="signin">登录</a>
+            <a href="#sign-modal" type="button" class="btn btn-success col-md-5 col-xs-6 col-md-offset-1 register-btn" data-toggle="modal" data-sign="signup">注册</a>
+            </div>
+
+        </div>
+
+        <div class="userinfo-footer row">
+            <div class="col-md-6 col-xs-6 pos-left">
+
+                <a href="#sign-modal" data-toggle="modal" data-sign="signin"><span class="glyphicon glyphicon-bookmark"></span> 加入私有课</a>
+
+            </div>
+            <div class="col-md-6 col-xs-6 pos-right">
+                <a href="/contribute" target="_blank"><span class="glyphicon glyphicon-send"></span> 我要投稿</a>
+            </div>
+
+            <div id="join-private-course" class="modal fade words-ctrl" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">加入私有课</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin:15px 0; font-size: 16px;">输入教师提供的私有课程码可以加入教师的私有课程。</div>
+                            <form id="private-course-form" method="POST" action="/courses/join">
+                                <div class="form-group">
+                                    <label for="code">邀请码</label>
+                                    <input class="form-control" id="code" name="code" type="text" value="">
+                                    <input name="_csrf_token" type=hidden value="1483780974##87f89328c5616669f00302a263fe9061bb852818">
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('private-course-form').submit();">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="sidebox">
+
+	<div class="sidebox-header">
+		<h4 class="sidebox-title">最热路径</h4>
+	</div>
+	<div class="sidebox-body course-content side-list-body">
+        <a href="" th:each="learningPath : ${learningPaths}"><img style="width:25px;height:25px" th:src="${learningPath.cover}" th:text="${learningPath.title}"></a>
+	</div>
+
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<!-- 课程信息结束 -->
+
+
+
+
+    <!-- 登录 注册 开始 -->
+    <div th:replace="index :: login">
+    </div>
+    <!-- 登录 注册 结束 -->
+
+
+    <div id="base-data"
+
+
+            data-flash="false"
+
+
+
+        data-is-login=false
+
+        data-is-jwt=true
+        data-socket-url="wss://comet.xxxxxx.com"
+        data-msg-user=""
+        data-msg-system=""
+    ></div>
+
+    <script src=" app/dest/lib/lib.js?=2016121272249"></script>
+    <script src=" static/jquery/2.2.4/jquery.min.js"></script>
+    <script src=" static/ace/1.2.5/ace.js"></script>
+    <script src=" static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src=" static/highlight.js/9.8.0/highlight.min.js"></script>
+    <script src=" static/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src=" static/plupload/2.1.9/js/plupload.full.min.js"></script>
+    <script src=" static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+    <script src=" static/videojs/video.min.js"></script>
+    <script src=" static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
+    <script src=" static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src=" static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src=" static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+    <script src=" static/ravenjs/3.7.0/raven.min.js"></script>
+    <script>
+        Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.xxxxxx.com/5', {
+            release: '3.12.13'
+        }).install();
+    </script>
+
+
+
+
+
+
+<div id="jinja-data"
+    data-loginurl="/login"
+    data-private-course-url="/courses/join"
+    data-site-type="0"
+
+></div>
+
+<script src=" app/dest/course/index.js?=2016121272249"></script>
+
+
+
+
+<!--       尾部开始     -->
+<div th:replace="index::commonFooter"></div>
+<!--  尾部结束-->
+
+
+
+</body>
+</html>

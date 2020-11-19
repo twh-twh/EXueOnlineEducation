@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exue.mapper.CourseMapper">
+
+    <resultMap id="selectCourseMap" type="Course">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="intro" property="intro" />
+        <result column="price" property="price" />
+        <result column="cover" property="cover" />
+        <result column="view_count" property="viewCount" />
+        <result column="status" property="status" />
+        <result column="creation_time" property="creationTime" />
+        <association property="teacher" javaType="Teacher">
+            <id column="teacher_id" property="id" />
+        </association>
+    </resultMap>
+    
+
+
+    <insert id="insertCourse">
+        insert into course(id, teacher_id, course_type, title, intro, price, lesson_num, cover, view_count, status, is_deleted, creation_time, update_time)
+        VALUES (#{id}, #{teacher.id}, #{courseType.id}, #{title}, #{intro}, #{price}, #{lessonNum}, #{cover}, 0, 0, 0, #{creationTime}, #{updateTime})
+    </insert>
+
+    <update id="updateCourseById">
+        update course
+        <set>
+            <if test="teacher.id != null">
+                teacher_id = #{teacher.id},
+            </if>
+            <if test="courseType.id != null">
+                course_type = #{courseType.id},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="lessonNum != null">
+                lesson_num = #{lessonNum},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateStatusById">
+        update course
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <update id="deleteCourse">
+        update course
+        set is_deleted = 1
+        where id = #{id}
+    </update>
+
+    <select id="selectCourses" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where status = 1 and is_deleted = 0
+    </select>
+
+
+    <select id="selectAllCourses" resultMap="selectCourseMap">
+        select id, teacher_id, course_type, title, intro, price, lesson_num, cover, view_count, status, creation_time
+        from course
+        where status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseSort" resultType="com.exue.entity.Course">
+        select c.id,  c.title,  c.price, cover, view_count as 'viewCount', a.price as 'specialOffer',
+        case when s.is_deleted = 1 then NULL
+        when s.expiration_time >= now() then s.id
+        else NULL end AS 'saleId'
+        from course c join course_type ct on c.course_type = ct.id
+        LEFT JOIN activity a on a.course_id = c.id
+        LEFT JOIN sale s ON s.course_id = c.id
+        where
+        <if test="courseTypeId != null">
+            course_type = #{courseTypeId} and
+        </if>
+        <if test="price != null">
+            (c.price = #{price}
+            <if test="price == 0">
+                or s.expiration_time >= now()
+            </if>
+             )and
+        </if>
+        <if test="search != null">
+            (ct.title like #{search} or c.title like #{search}) and
+        </if>
+        status = 1 and c.is_deleted = 0
+        order by
+        <if test="isTime">
+            c.creation_time desc
+        </if>
+        <if test="!isTime">
+            view_count desc
+        </if>
+    </select>
+
+
+
+    <select id="selectCourseByTeacher" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where teacher_id = #{id} and status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseByCourseType" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where course_type = #{id} and status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseByLikeTitle" resultMap="selectCourseMap">
+        select id, teacher_id, title, intro, price, cover, view_count
+        from course
+        where title like #{title} and status = 1 and is_deleted = 0
+    </select>
+
+    <select id="selectCourseSortByActivity" resultType="com.exue.entity.Course">
+        select c.id,  c.title,  c.price, c.cover, c.view_count as 'viewCount', a.price as 'specialOffer'
+        from course c join activity a on c.id = a.course_id join course_type ct on c.course_type = ct.id
+        where
+        <if test="courseTypeId != null">
+            course_type = #{courseTypeId} and
+        </if>
+        <if test="search != null">
+            (ct.title like #{search} or c.title like #{search}) and
+        </if>
+        status = 1 and c.is_deleted = 0 and a.is_deleted = 0
+        order by
+        <if test="isTime">
+            c.creation_time desc
+        </if>
+        <if test="!isTime">
+            view_count desc
+        </if>
+    </select>
+
+    <select id="selectCourseSortBySale" resultType="com.exue.entity.Course">
+        select c.id,  c.title,  c.price, c.cover, c.view_count as 'viewCount', s.id as 'saleId'
+        from course c join sale s on c.id = s.course_id join course_type ct on c.course_type = ct.id
+        where
+        <if test="courseTypeId != null">
+            course_type = #{courseTypeId} and
+        </if>
+        <if test="search != null">
+            (ct.title like #{search} or c.title like #{search}) and
+        </if>
+        s.expiration_time >= NOW() and status = 1 and c.is_deleted = 0 and s.is_deleted = 0
+        order by
+        <if test="isTime">
+            c.creation_time desc
+        </if>
+        <if test="!isTime">
+            view_count desc
+        </if>
+    </select>
+
+    <select id="selectCourseById" resultMap="particularSelectMap">
+        select c.id, c.teacher_id, c.course_type, c.title, c.`describe`, c.intro, c.price, c.lesson_num, c.cover, c.view_count,
+               t.name, t.intro as 't.intro', t.avatar, ct.title as 'ct.title', a.price as 'specialOffer',o.id AS 'orderId', cl.id AS 'collectId',
+               case when s.is_deleted = 1 then NULL
+                    when s.expiration_time >= now() then s.id
+                    else NULL end AS 'saleId'
+        from course c join teacher t on c.teacher_id = t.id
+                      join course_type ct on c.course_type = ct.id
+                      LEFT JOIN activity a on a.course_id = c.id
+                      LEFT JOIN sale s ON s.course_id = c.id
+                      LEFT JOIN (
+                        SELECT id,course_id, user_id
+                        FROM `order`
+                        WHERE user_id = "980825"
+                    ) o ON c.id = o.course_id
+                                  LEFT JOIN (
+                        SELECT id,course_id, user_id
+                        FROM collect
+                        WHERE user_id = "980825"
+                    ) cl ON c.id = cl.course_id
+        where c.id = #{id} and c.is_deleted = 0
+    </select>
+
+    <select id="selectCourseByTeacherId" resultType="com.exue.entity.Course">
+        select id, title, cover, view_count as "viewCount"
+        from course
+        where teacher_id = #{teacherId}
+    </select>
+
+    <resultMap id="particularSelectMap" type="Course">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="intro" property="intro" />
+        <result column="price" property="price" />
+        <result column="cover" property="cover" />
+        <result column="lesson_num" property="lessonNum" />
+        <result column="view_count" property="viewCount" />
+        <result column="status" property="status" />
+        <result column="creation_time" property="creationTime" />
+        <result column="describe" property="describe" />
+        <result column="specialOffer" property="specialOffer" />
+        <result column="saleId" property="saleId" />
+        <result column="orderId" property="orderId" />
+        <result column="collectId" property="collectId" />
+        <association property="teacher" javaType="Teacher">
+            <id column="teacher_id" property="id" />
+            <result column="name" property="name" />
+            <result column="t.intro" property="intro" />
+            <result column="avatar" property="avatar" />
+        </association>
+        <association property="courseType" javaType="CourseType">
+            <id column="course_type" property="id" />
+            <result column="ct.title" property="title" />
+        </association>
+    </resultMap>
+</mapper>

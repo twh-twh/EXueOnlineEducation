@@ -1,0 +1,722 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+  <meta http-equiv="Cache-Control" content="o-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="csrf-token" content="1483780974##87f89328c5616669f00302a263fe9061bb852818">
+  <base th:href="@{/}">
+    <title th:text="${course.courseType.title} + ' - ' + ${course.title}">C/C++ - C++ 经典项目实战 - 实验楼</title>
+
+<meta content="实验楼课程分为基础课和项目课，内容涵盖了Linux、Python、Java、C语言、Ruby、Android、IOS开发、大数据、信息安全等IT技术领域。" name="description">
+<meta content="实验楼课程,IT培训课程,IT实训课程,IT在线课程,all" name="keywords">
+
+    <meta content="" name="author">
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="app/css/libs/videojs/5.11.7/video-js.min.css">
+	<link rel="stylesheet" href="app/css/dest/styles.css?=2016121272249">
+    <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        let id = [[${course.id}]];
+        let collectId = [[${course.collectId}]];
+
+        $(function () {
+            $("#purchase").unbind();
+            $(".section").children(".video").hide();
+            $(".section").eq(0).children(".video").show();
+
+            $(".section").click(function () {
+                $(this).children(".video").toggle();
+            })
+
+            $("#purchase").click(function () {
+                $("#bootcamp-pay-modal").modal("show");
+            })
+
+            $(".stat-event").click(function () {
+                getAllComment(1, 10, id);
+            })
+
+            $("#collect").unbind();
+            $("#collect").click(function () {
+                let hasClass = $(this).hasClass("fa-star-o");
+                let $this = $(this);
+                if (hasClass) {
+
+                    $.ajax({
+                        url: "http://localhost:8805/collect/info/add/" + id + "/" + "980825",
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code == 20000) {
+                                $($this).removeClass("fa-star-o");
+                                $($this).addClass("fa-star");
+                                collectId = result.data.collectId;
+                            }
+                        }
+                    })
+                } else {
+                    let $this = $(this);
+                    $.ajax({
+                        url: "http://localhost:8805/collect/info/delete/" + collectId,
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code == 20000) {
+                                $($this).removeClass("fa-star");
+                                $($this).addClass("fa-star-o");
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
+        function getAllComment(pageNum, pageSize) {
+            $(".comment-list").html("");
+            $.ajax({
+                url: "http://localhost:8804/comment/info/getAll",
+                data: {
+                    "courseId": id,
+                    "pageNum": pageNum,
+                    "pageSize": pageSize
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    let comments = result.data.comments;
+                    let length = comments.length;
+                    for (let i = 0; i < length; i++) {
+                        let str = generatedComments(comments[i]);
+                        $(".comment-list").append(str);
+                    }
+
+                    let commentPage = {
+                        pageNum: result.data.pageNum,
+                        pageSize: result.data.pageSize,
+                        isFirstPage: result.data.isFirstPage,
+                        isLastPage: result.data.isLastPage,
+                        pageNums: result.data.pageNums
+                    }
+
+                    $(".pagination-container").html(commentPaging(commentPage));
+                }
+            })
+        }
+
+        function generatedComments(comment) {
+            return `
+<div class="answer-item">
+<div class="answer-head">
+
+<div class="user-avatar ">
+<a class="avatar" href="/user/347060" target="_blank">
+<img src="${comment.user.avatar}">
+</a>
+
+</div>
+
+</div>
+<div class="answer-detail">
+<span class="comment-reply">
+    <div class="user-username ">
+        <a class="username" href="/user/347060" target="_blank">
+            ${comment.user.nickname}
+        </a>
+        <span class="user-level">L4</span>
+</div>
+
+</span>
+
+<div class="answer-content markdown-body">
+<div> ${comment.content}
+</div>
+<span style="float: right">${comment.creationTime}</span>
+</div>
+
+<div>
+
+<hr/>
+</div>
+</div>
+</div>
+`
+        }
+
+        function commentPaging(commentPage) {
+            let previous = `
+            <nav class="pagination-container">
+            <ul class="pagination">
+
+            <li class="${ commentPage.isFirstPage ? 'disabled' : ''}"
+                onclick="getAllComment(${commentPage.pageNum - 1}, 10)"
+            >
+                <a href="javascript:void(0);" aria-label="Previous" id="previous">
+                    <span aria-hidden="true" >上一页</span>
+                </a>
+            </li>
+            `;
+            let pageCode = '';
+            let length = commentPage.pageNums.length;
+            for (let i = 0; i < length; i++) {
+                pageCode += `
+                    <li class="${commentPage.pageNums[i] == commentPage.pageNum ? 'active pageNum' : 'pageNum'}"
+                        onclick="getAllComment(${commentPage.pageNums[i]}, 10)"
+                    >
+                        <a href="javascript:void(0);">${commentPage.pageNums[i]}</a>
+                    </li>
+                `
+            }
+
+            let next = `
+            <li  class="${ commentPage.isLastPage ? 'disabled' : ''}"
+                onclick="getAllComment(${commentPage.pageNum + 1}, 10)">
+
+                        <a href="javascript:void(0);" aria-label="Previous" id="next">
+                            <span aria-hidden="true" >下一页</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+                        `;
+            return previous + pageCode + next;
+        }
+    </script>
+
+
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url("fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+<link rel="stylesheet" href="restatic/js/libs/marked/katex/katex.min.css">
+<style>
+    .bootcamp-infobox {
+        margin: 50px 0 0;
+    }
+    .invite-friends-link {
+        margin-top:10px;
+        padding-left:8px;
+    }
+    .invite-friends-link input {
+        margin-left:-5px;
+    }
+    .invite-friends-link button {
+        float:left;
+        margin-top:5px;
+        margin-left:-5px;
+    }
+    .invite-friends-link .copy-msg {
+        float:left;
+        margin-top:10px;
+        margin-left:20px;
+        color:#42b1ad;
+    }
+    p.join-vip-faq {
+        margin-top:20px;
+        margin-bottom:-50px;
+        font-size:13px;
+    }
+    p.join-vip-faq img {
+        height:13px;
+        width:13px;
+        margin-top:-2px;
+    }
+    a.vip-without-bean {
+        font-size:18px;
+        line-height:30px;
+    }
+
+    .video {
+        width: 100%;
+        text-align: center;
+    }
+
+
+    .videos{ display:none; border: 1px solid #080808; position:fixed; left:50%; top:50%; margin-left:-320px; margin-top:-210px; z-index:100; width:640px; height:360px; }
+    .vclose { position:absolute;right:1%; top:1%; border-radius:100%; cursor: pointer; }
+    .con{height: 430px; width: 1000px;margin: 0 auto;}
+    .masklayer{position: fixed;display: none;width: 100%;height: 1000px;top: 0px;left: 0px;background-color: rgba(0, 0, 0, 0.8);z-index: 1000;-webkit-user-select: none;-ms-user-select: none;}
+</style>    
+
+	
+    
+</head>
+
+<body>
+
+
+
+<!-- 头部开始 -->
+<nav th:replace="index::commonNav" ></nav>
+<!-- 头部结束 -->
+
+
+	
+
+<!-- 主体内容开始 -->
+<div class="container layout layout-margin-top">
+    
+<ol class="breadcrumb">
+    <li><a href="course/explore?pageNum=1&pageSize=12&isTime=true">全部课程</a></li>
+    
+    <li>
+    
+    <a th:href="'course/explore?pageNum=1&pageSize=12&isTime=true&courseTypeId=' + ${course.courseType.id}"
+        th:text="${course.courseType.title}"
+    ></a>
+    
+    </li>
+    
+    <li class="active" th:text="${course.title}">
+
+    </li>
+</ol>
+
+    <div class="row">
+        <div class="col-md-9 layout-body">
+        <div class="side-image side-image-mobile">
+            <img src="https://dn-simplecloud.xxxxxx.com/1478912411387.png?imageView2/0/h/300">
+        </div>
+        <div class="content course-infobox">
+        <div class="clearfix course-infobox-header">
+            <h4 class="pull-left course-infobox-title">
+                
+                <span class="course-infobox-type" data-course-type="1">课程</span>
+                
+                <span th:text="${course.title}"></span>
+                
+            </h4>
+            <div class="pull-right course-infobox-follow"
+                data-follow-url="/courses/454/follow"
+                data-unfollow-url="/courses/454/unfollow">
+                <span class="course-infobox-followers" th:text="${course.viewCount}"></span>
+                <span>播放量</span>
+<!--                fa-star  fa-star-o collect-->
+                <i id="collect" th:class="${course.collectId != null ? 'fa fa-star' : 'fa fa-star-o'}" data-next="/login?next=%2Fcourses%2F454"></i>
+                
+            </div>
+        </div>
+        <div class="clearfix course-infobox-body">
+            <div class="course-infobox-content">
+            <p th:text="${course.describe}"></p>
+
+            <a class="btn btn-success online-consultant" data-toggle="modal" data-target="#askquestion">
+                <span th:if="${course.orderId != null}">开始学习</span>
+                <span th:unless="${course.orderId != null}">
+                    <span th:text="${course.price == 0 or course.saleId != null ? '免费加入学习' : '立即购买'}"></span>
+                </span>
+            </a>
+            
+            </div>
+            
+            <div class="course-infobox-progress">
+
+                预计课时 <span th:text="${course.lessonNum}"></span> 时
+            </div>
+        </div>
+        
+        <div class="clearfix bootcamp-infobox" th:if="${course.orderId == null}">
+            <div class="bootcamp-infobox-footer">
+
+                <div class="col-md-3 bootcamp-infobox-msg">
+                    <img src="img/bootcamp-course.png">
+                    <div class="msg-desc"><span th:text="${course.lessonNum} + ' 个课时的学习'"></span></div>
+                    <img class="bootcamp-infobox-footer-plus" src="img/bootcamp-plus.png">
+                </div>
+                
+                <div class="col-md-3 bootcamp-infobox-msg">
+                    <img src="img/bootcamp-env.png">
+                    <div class="msg-desc"><span>最新实用的实战技术</span></div>
+                    <img class="bootcamp-infobox-footer-plus" src="img/bootcamp-plus.png">
+                </div>
+                <div class="col-md-3 bootcamp-infobox-msg">
+                    <img src="img/bootcamp-qa.png">
+                    <div class="msg-desc"><span>有问必答的实验助教</span></div>
+                    <img class="bootcamp-infobox-footer-plus" src="img/bootcamp-equal.png">
+                </div>
+                
+				
+                <div class="col-md-3 bootcamp-infobox-msg bootcamp-infobox-buybox">
+						<div class="original-price">￥<span th:text="${course.price / 100} + '.' + ${course.price % 100}"></span></div>
+						<div class="member-price">
+						
+						<span class="member-price" data-container="body" data-toggle="popover" data-placement="top" data-original-title="会员优惠" data-html="true" data-content="普通会员
+(<span class='price-number'>8折</span>)：<span class='price-number'>￥159.2</span><br>高级会员 (<span class='price-number'>5折</span>)：<span class='price-number'>￥99.5</span>"><a href="/vip" title="">会员最低5折</a></span>
+						
+                        </div>
+
+                    <div class="bootcamp-infobox-buy" id="purchase">立即购买</div>
+						
+					</div>
+				
+            </div>
+        </div>
+        
+    </div>
+        <div class="content">
+        <ul class="nav nav-tabs" role="tablist">
+            
+            <li role="presentation" class="active">
+                <a href="#charge-course-detail" aria-controls="charge-course-detail" role="tab" data-toggle="tab">课程详情</a>
+            </li>
+            <li role="presentation">
+                <a href="#labs" aria-controls="labs" role="tab" data-toggle="tab">课程列表</a>
+            </li>
+            
+            <li role="presentation">
+                <a href="#comments" class="stat-event" aria-controls="comments" role="tab" data-stat="course_comment" data-toggle="tab" th:text="'课程评论(' + ${commentCount} + ')'"></a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            
+            <div role="tabpanel" class="tab-pane active markdown-box" id="charge-course-detail">
+                <textarea style="display:none;" th:text="${course.intro}">
+                </textarea>
+            </div>
+            
+            <div role="tabpanel" class="tab-pane " id="labs">
+                <div class="section"  th:each=" section : ${course.sections}">
+
+                    <div class="lab-item">
+                        <div class="lab-item-status">
+                            <img src="img/lab-not-ok.png">
+                        </div>
+                        <div class="lab-item-index" th:text="${section.title}"></div>
+                    </div>
+
+                    <div class="lab-item video"  th:each=" video : ${section.videos}">
+                        <div class="lab-item-title" data-toggle="tooltip" data-placement="bottom" th:title="${video.title}" th:text="${video.title}"></div>
+                        <div class="pull-right lab-item-ctrl">
+                            <div class="videolist" vpath="img/1470893356136.png" th:name="${video.path}">
+                                <a class="btn btn-primary" href="javascript:void(0);">播放视频</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane course-comment" id="comments">
+                <div class="comment-box">
+                    <div class="comment-form">
+
+                            <div class="comment-form-unlogin">
+                                请
+                                <a href="#sign-modal" data-toggle="modal" data-sign="signin" data-next="/courses/454"> 登录 </a>
+                                后发表评论
+                            </div>
+
+                    </div>
+                    <div class="comment-title">最新评论</div>
+                    <div class="comment-list">
+                        
+                    </div>
+                    <div class="pagination-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+        </div>
+        <div class="col-md-3 layout-side">
+            
+            <div class="side-image side-image-pc">
+                <img th:src="${course.cover}">
+            </div>
+
+            <div class="sidebox mooc-teacher">
+                <div class="sidebox-header mooc-header">
+                    <h4 class="sidebox-title">课程教师</h4>
+                </div>
+                <div class="sidebox-body mooc-content">
+                    <a href="javascript:void(0);" >
+                        <img th:src="${course.teacher.avatar}" style="height: 100%; width: 100%;">
+                    </a>
+                    <div class="mooc-info">
+                        <div class="name"><strong th:text="${course.teacher.name}"></strong> </div>
+
+                        <div class="courses">共发布过<strong>6</strong>门课程</div>
+                    </div>
+                    <div class="mooc-extra-info">
+                        <div class="word long-paragraph">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebox-footer mooc-footer">
+                    <a href="javascript:void(0);" target="_blank">查看老师的所有课程 ></a>
+                </div>
+            </div>
+
+            <div class="sidebox recommend-courses">
+                <div class="sidebox-header recommend-courses-header">
+                    <h4 class="sidebox-title">老师其它课程</h4>
+                </div>
+                <div class="sidebox-body recommend-courses-content">
+
+                    <a th:if="${c.id != course.id}" th:href="'course/show/' + ${c.id}" th:each="c : ${courses}" th:text="${c.title}"></a>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--  主体内容结束-->
+
+<!-- 支付页面 开始-->
+<div class="modal fade" id="bootcamp-pay-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog bootcamp-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">购买训练营</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>手机号</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input type="text" name="phone_no" class="form-control" value="" >
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary get-phone-code " type="button" style="border-width:2px;"
+                                            data-code-url="/user/sms/code"
+                                            data-pay-url="/purchase/bootcamp/10/pay">获取验证码</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label>验证码</label>
+                        <input type="text" class="form-control bootcamp-phone-code">
+                        <a class="label label-warning" href="javascript:void(0);" target="_blank">收不到验证码？</a>
+                    </div>
+					
+                    <div class="form-group">
+                        <label>支付方式</label>
+                        <div class="pay-method-box">
+                            <div class="pay-method pay-method-ali active" data-pay="ALI_WEB">
+                            </div>
+                            <div class="pay-method pay-method-wx" data-pay="WX_NATIVE">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-body vip-modal-qrcode" style="display:none;">
+                <div class="vip-wx-price">付款：<span></span></div>
+                <div class="vip-wx-qrcode"></div>
+                <a class="vip-wx-method" href="javascript:void(0);">更换支付方式</a>
+            </div>
+            <div class="modal-footer">
+				<span class="real-price pull-left">￥199.00</span>
+				<span class="price-without-book pull-left" style="display:none;">￥199.00</span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary bootcamp-confirm-pay">确认购买</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 支付页面 结束-->
+
+<!-- 确认支付开始 -->
+<div class="modal fade" id="paid-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="text-align:center;">支付确认</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-primary paid-confirm" type="button">支付成功</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary paid-method" type="button" style="background:none; color:#0c9">选择支付方式</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 确认支付结束-->
+
+
+<!-- 登录 注册 开始 -->
+<div th:replace="index :: login">
+</div>
+<!-- 登录 注册 结束 -->
+
+    <div id="base-data"
+        
+        
+            data-flash="false"
+            
+        
+        
+        data-is-login=false
+        
+        data-is-jwt=true
+        data-socket-url="wss://comet.xxxxxx.com"
+        data-msg-user=""
+        data-msg-system=""
+    ></div>
+
+
+<!--  视频开始  -->
+<div>
+    <div class="con" style="margin-top: 100px">
+        <div class="masklayer"><!--遮罩层-->
+            <div class="videos"></div><!--存放视频-->
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.videolist').each(function(){ //遍历视频列表
+        $(this).click(function(){ //视频被点击后执行
+            var img = $(this).attr('vpath');//获取视频预览图
+            var video = $(this).attr('name');//获取视频路径
+            $('.videos').html("<video id=\"video\" poster='"+img+"' style='width: 640px' src='"+video+"' preload=\"auto\" controls=\"controls\" autoplay=\"autoplay\"></video><img onClick=\"close1()\" class=\"vclose\" src=\"../img/gb.png\" width=\"25\" height=\"25\"/>");
+            $('.videos').show();//视频窗口弹出
+            $('.masklayer').show(); //遮罩层弹出
+            winHeight = document.body.clientHeight;
+            $(".masklayer").height(winHeight + 5000 + "px");
+        });
+    });
+    function close1(){
+        var v = document.getElementById('video');//获取视频节点
+        $('.videos').hide();//点击关闭
+        $('.masklayer').hide();//遮罩层隐藏
+        v.pause();//停止
+        $('.videos').html();
+    }
+</script>
+
+<!--  视频结束-->
+<script src="app/dest/lib/lib.js?=2016121272249"></script>
+<script src="static/jquery/2.2.4/jquery.min.js"></script>
+<script src="static/ace/1.2.5/ace.js"></script>
+<script src="static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+<script src="static/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="static/jspdf/1.2.61/jspdf.min.js"></script>
+<script src="static/plupload/2.1.9/js/plupload.full.min.js"></script>
+<script src="static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+<script src="static/videojs/video.min.js"></script>
+<script src="static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
+<script src="static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+<script src="static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+<script src="static/ravenjs/3.7.0/raven.min.js"></script>
+<script>
+    Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.xxxxxx.com/5', {
+        release: '3.12.13'
+    }).install();
+</script>
+
+    
+<div id="jinja-data"
+    data-userlab-id=""
+    data-course-id="454"
+    data-is-authenticated="false"
+	data-user-joined="false"
+    data-user-logined="false"
+    data-show-student-info-modal="false"
+    data-login-url="/login?next=%2Fcourses%2F454"
+    data-start-newlab-url="/courses/clear"
+    
+    data-faq="/faq"
+    data-comment-post="/courses/454/comments"
+    data-loginurl="/login?next=%2Fcourses%2F454"
+    data-site-type="0"
+    data-report-post="/courses/454/reports"
+    data-recomment-img="img/recommentReport.png"
+    data-charge-course-phone-code="/user/sms/code"
+    data-join-private-course="/courses/join"
+    data-current-user-id=""
+    data-vip-icon="img/vip-icon.png"
+    data-vip-index="/vip"
+    data-get-question-url="/courses/454/questions"
+	data-real-price = "199.00"
+    
+	data-price-without-book = "199.00"
+    
+    data-query-bill="/purchase/bill/query"
+    data-question-form="/questions/meta"
+    data-qiniu-token-url="/api/qiniu/token"
+    ></div>
+
+<script src="app/dest/course/labs.js?=2016121272249"></script>
+
+
+
+
+
+
+<!--       尾部开始     -->
+<div th:replace="index::commonFooter"></div>
+<!--  尾部结束-->
+
+            
+        
+	
+</body>
+</html>

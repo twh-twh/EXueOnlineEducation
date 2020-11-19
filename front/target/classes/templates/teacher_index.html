@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Lei Shi">
+  <meta http-equiv="Cache-Control" content="o-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="csrf-token" content="1483780974##87f89328c5616669f00302a263fe9061bb852818">
+	
+		
+      <title>老师合作 - 实验楼</title>
+		
+	
+
+    
+<meta content="实验楼课程分为基础课和项目课，内容涵盖了Linux、Python、Java、C语言、Ruby、Android、IOS开发、大数据、信息安全等IT技术领域。" name="description">
+<meta content="实验楼课程,IT培训课程,IT实训课程,IT在线课程,all" name="keywords">
+
+    <meta content="" name="author">
+
+	<base th:href="@{/}">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="static/font-awesome//4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/highlight.js/9.8.0/monokai-sublime.min.css">
+    <link rel="stylesheet" href="app/css/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app/css/libs/katex/0.6.0/katex.min.css">
+    <link rel="stylesheet" href="app/css/libs/videojs/5.11.7/video-js.min.css">
+	<link rel="stylesheet" href="app/css/dest/styles.css?=2016121272249">
+
+	<style>
+		@font-face {
+			font-family: "lantingxihei";
+			src: url("fonts/FZLTCXHJW.TTF");
+		}
+
+        /* modal 模态框*/
+        #invite-user .modal-body {
+            overflow: hidden;
+        }
+		#invite-user .modal-body .form-label {
+			margin-bottom: 16px;
+			font-size:14px;
+		}
+		#invite-user .modal-body .form-invite {
+			width: 80%;
+			padding: 6px 12px;
+			background-color: #eeeeee;
+			border: 1px solid #cccccc;
+			border-radius: 5px;
+			float: left;
+			margin-right: 10px;
+		}
+		#invite-user .modal-body .msg-modal-style {
+			background-color: #7dd383;
+			margin-top: 10px;
+			padding: 6px 0;
+			text-align: center;
+			width: 100%;
+		}
+		#invite-user .modal-body .modal-flash {
+			position: absolute;
+			top: 53px;
+			right: 74px;
+			z-index: 999;
+		}
+		/* end modal */
+
+        .en-footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+
+	
+    
+</head>
+
+<body>
+
+
+<!-- 头部开始 -->
+<nav th:replace="index::commonNav" ></nav>
+<!-- 头部结束 -->
+
+
+
+        
+	
+<div class="laboratory-header layout-no-margin-top">
+    <h1 class="laboratory-title">在线实验，让计算机教学灵活高效</h1>
+</div>
+<div class="laboratory-des-con">
+    <div class="container">
+        <div class="laboratory-des col-md-6">
+            <div class="media laboratory-des-item">
+                <div class="media-left media-middle">
+                    <a><img src="img/laboratory-higheffic.png"></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="laboratory-des-title">实验设计不受局限</h4>
+                    <p class="laboratory-des-text">在线环境1秒启动，环境可定制，预装软件</p>
+                </div>
+            </div>
+            <div class="media laboratory-des-item">
+                <div class="media-left media-middle">
+                    <a><img src="img/laboratory-nimble.png"></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="laboratory-des-title">随时随地动手实验</h4>
+                    <p class="laboratory-des-text">云端代码库随时同步，实验报告自动生成</p>
+                </div>
+            </div>
+            <div class="media laboratory-des-item">
+                <div class="media-left media-middle">
+                    <a><img src="img/laboratory-proper.png"></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="laboratory-des-title">教学管理简单有序</h4>
+                    <p class="laboratory-des-text">在线管理学生代码、实验报告，远程协作指导</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="laboratory-apply-con">
+                <h4 class="laboratory-apply-title">开设在线实验课，可以做什么？</h4>
+                <div class="laboratory-apply-text">
+                    <p>如果您是高校教师，可定制私有课，学生随时随地实验，老师一键下载学习数据</p>
+                    <p>如果您是技术工程师，可分享最新的IT实战技术，与粉丝畅聊互动</p>
+                    <p>如果您是计算机MOOC老师，在线实验可以让学生边学边练，获得学生真实的学习效果反馈</p>
+                    <p>......</p>
+                </div>
+                <a href="http://form.mikecrm.com/f.php?t=A4qEXq" class="laboratory-apply-btn" target="_blank">填写表单，申请开课</a>
+                <div class="laboratory-apply-warning">欢迎高校老师 / 机构讲师 / 技术博主申请。</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="laboratory-teachers-con">
+    <div class="container">
+		<div class="row">
+			<div class="laboratory-teachers-header">
+				<img src="img/laboratory-flag.png" class="laboratory-teachers-flag">
+				<span class="laboratory-teachers-here">他们都在这里</span>
+                <span class="laboratory-teachers-tri"></span>
+				<span class="laboratory-here-text">他们在这里开设了专属实验室</span>
+			</div>
+		</div>
+        <div class="row laboratory-tea-panel">
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarDFKL7L25TBCL.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									严老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">河北交通职业技术学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarW6LVY88YVFK6.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									陆卫忠
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">苏州科技学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarKTH9MTLYNWL7.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									王老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">武汉理工大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarNTY0MzE5MTY0OTA0.png?v=1463643389748&amp;imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									吴老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">防灾科技学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarXWCQHTH6G8GJ.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									赵老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">北京工商大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarA4S4ZEPKNH6H.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									毛典辉
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">北京工商大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarNSX55853FV4D.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									董老师
+								</span>&nbsp;
+								<span class="tectitle">副教授</span>
+							</p>
+                            
+                            <p><span class="tecnschool">河北师范大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatar78E6XYYPTDY9.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									张华
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">哈尔滨工业大学（威海）</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;3&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarNTY0MzE5MTMwMzk1.png?v=1471616297554&amp;imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									黑板客
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">网易云课堂讲师</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="user/13/study.html">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.qbox.me/gravatar25.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									张老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">沈阳航空航天大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/74224">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarXKHBK8QBLTAT.jpg?imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									溪老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">华中科技大学武昌分校</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/65531">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatarNTY0MzE5MDc4MjA2.png?v=1463563574054&amp;imageView2/1/w/200/h/200"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									李远辉
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">湖南工程学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;5&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/55546">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatar40.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									杨浚
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">常州开放大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/51209">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/seedlab_v2.png"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									SEEDLabs
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">Syracuse University</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;19&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/48058">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatar48.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									丁宋涛
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">南京工程学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/36061">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/chenyu.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									陈渝
+								</span>&nbsp;
+								<span class="tectitle">副教授</span>
+							</p>
+                            
+                            <p><span class="tecnschool">清华大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/34822">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/StudyGolang社区logo1.png"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									Go语言中文网
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <div class="tecname"></div>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/30757">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/清华大学出版社社标.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									清华大学出版社
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <div class="tecname"></div>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/28022">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.qbox.me/gravatar46.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									娄嘉鹏
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">北京电子科技学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;5&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/27791">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/jixiegongye.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									机械工业出版社
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <div class="tecname"></div>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/26709">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher人邮透明社标1.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									人民邮电出版社
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <div class="tecname"></div>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;3&nbsp;
+								</span>
+								门课程
+								</span>
+
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/25536">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/linuxcn.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									Linux中国
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <div class="tecname"></div>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;4&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/20637">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatar55.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									王和兴
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">东北大学秦皇岛分校</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/19614">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/lizhijun.png"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									李治军
+								</span>&nbsp;
+								<span class="tectitle">副教授</span>
+							</p>
+                            
+                            <p><span class="tecnschool">哈尔滨工业大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/19301">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/mengning.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									孟宁
+								</span>&nbsp;
+								<span class="tectitle">高级工程师</span>
+							</p>
+                            
+                            <p><span class="tecnschool">中国科学技术大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;3&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/19216">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.qbox.me/gravatar7.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									王老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">烟台大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/17773">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher/43_avatar_middle.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									郑莉
+								</span>&nbsp;
+								<span class="tectitle">副教授</span>
+							</p>
+                            
+                            <p><span class="tecnschool">清华大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/12501">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-anything-about-doc.qbox.me/teacher.jpg"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									郑晓薇
+								</span>&nbsp;
+								<span class="tectitle">教授</span>
+							</p>
+                            
+                            <p><span class="tecnschool">辽宁师范大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;3&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/12145">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatar61.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									岳亚伟
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">山西农业大学</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;1&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+			<div class="col-md-4">
+				<a href="/teacher/12132">
+                    <div class="laboratory-box">
+                        <div class="col-md-6">
+                            
+                                <img class="headimg" src="https://dn-simplecloud.xxxxxx.com/gravatar44.jpg?imageView2/1/w/100/h/100"/>
+                            
+                        </div>
+                        <div class="col-md-6 top-13">
+                            <p>
+								<span class="tecname">
+									关老师
+								</span>&nbsp;
+								<span class="tectitle"></span>
+							</p>
+                            
+                            <p><span class="tecnschool">南昌师范学院</span></p>
+                            
+                            <p>
+								<span class="coursenum">已发布
+								<span style="color:#eb6877;font-weight:bold;">
+									&nbsp;2&nbsp;
+								</span>
+								门课程
+								</span>
+							</p>
+                        </div>
+                    </div>
+				</a>
+			</div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 登录 注册 开始 -->
+<div th:replace="index :: login">
+</div>
+<!-- 登录 注册 结束 -->
+
+
+    <div id="base-data"
+        
+        
+            data-flash="false"
+            
+        
+        
+        data-is-login=false
+        
+        data-is-jwt=true
+        data-socket-url="wss://comet.xxxxxx.com"
+        data-msg-user=""
+        data-msg-system=""
+    ></div>
+
+    <script src="app/dest/lib/lib.js?=2016121272249"></script>
+    <script src="static/jquery/2.2.4/jquery.min.js"></script>
+    <script src="static/ace/1.2.5/ace.js"></script>
+    <script src="static/aliyun/aliyun-oss-sdk-4.3.0.min.js"></script>
+    <script src="static/highlight.js/9.8.0/highlight.min.js"></script>
+    <script src="static/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src="static/plupload/2.1.9/js/plupload.full.min.js"></script>
+    <script src="static/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+    <script src="static/videojs/video.min.js"></script>
+    <script src="static/bootstrap-tour/0.11.0/js/bootstrap-tour.min.js"></script>
+    <script src="static/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="static/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="static/bootstrap-table/1.11.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+    <script src="static/ravenjs/3.7.0/raven.min.js"></script>
+    <script>
+        Raven.config('https://bc3878b7ed0a4468a65390bd79e6e73f@sentry.xxxxxx.com/5', {
+            release: '3.12.13'
+        }).install();
+    </script>
+
+    
+<script src="app/dest/base/index.js?=2016121272249"></script>
+
+
+<!--       尾部开始     -->
+<div th:replace="index::commonFooter"></div>
+<!--  尾部结束-->
+
+            
+        
+	
+</body>
+</html>
